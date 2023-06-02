@@ -203,6 +203,10 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
+                                                             @elseif($selisih >0)
+                                                                <div class="alert alert-success" role="alert">
+                                                                <h5 class="text-center">Stok Barang Terpenuhi</h5>
+                                                                </div>
                                                             @endif
 
                                                         @endif
@@ -210,11 +214,9 @@
                                                 @endif
                                             @endforeach
                                         @endforeach
-                                        @if($selisih>0)
-                                            <div class="alert alert-success" role="alert">
-                                            <h5 class="text-center">Stok Barang Terpenuhi</h5>
-                                            </div>
-                                        @endif
+
+
+                                        
                                         
                                     </div> 
                                 </div>

@@ -2,6 +2,43 @@
 
 @extends('layout.layout')
 @section('konten')
+<style>
+    .qty-barang{
+    width: 5vw;
+    height: 5vh;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    }
+    .tambahkan{
+        background-color: #0d6efd;
+    width: 30px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: white;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    }
+    .kurang{
+    background-color: #0d6efd;
+    width: 30px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: white;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    }
+</style>
+
 <div class="row mt-3">
     <div class="col-md-12">
         <nav aria-label="breadcrumb">
@@ -64,14 +101,14 @@
                     <div style="height:370px; overflow:auto;" >
                         <table class="table table-hover table-striped show-cart" id="table_form">
                             <thead class="table-primary">
-                                <tr>
+                                <tr class="text-center">
                                 <th class="col text-center">#</th>
                                 <th class="col" >Kode Barang</th>
                                 <th class="col" >Nama Barang</th>
                                 <th class="col" >Ukuran</th>
                                 <th class="col" >Warna</th>
-                                <th class="col-" >Harga Satuan</th>
-                                <th class="col" style="width:150px;">Qty</th>
+                                <th class="col" >Harga Satuan</th>
+                                <th class="col" style="width:150px; text-align:center;">Qty</th>
                                 </tr>
                             </thead>
                             <tbody id="tambah_item">
@@ -211,7 +248,6 @@
             var item = new Item(id,kode,nama,ukuran,warna,beli,deskripsi,hitung);
             cart.push(item);
             simpanCart();
-            console.log(simpanCart() );
         };
 
         // menghitung jumlah item
@@ -337,22 +373,30 @@
     function tampilCart(){
         var cartArray = keranjang.listCart();
         var konten ="";
+        const rupiah = (number)=>{
+            return new Intl.NumberFormat("id-ID", {
+            style: "currency",
+            currency: "IDR"
+            }).format(number);
+        }
+
         for(var i in cartArray)
         {
-            konten +="<tr>"+
+            konten +="<tr class='text-center'>"+
                             "<td><button class='btn btn-danger hapus' onclick='hapus(this)'data-kode='"+cartArray[i].kode+"' ><i class='bi bi-trash3'></i> </button> </td>"+
                             "<td>"+cartArray[i].kode+"<input type='hidden' value='"+cartArray[i].kode+"' name='kode[]' required> </td>"+
                             "<td>"+cartArray[i].nama+"</td>"+
                             "<td>"+cartArray[i].ukuran+"</td>"+
                             "<td>"+cartArray[i].warna+"</td>"+
-                            "<td>"+cartArray[i].beli+"<input type='hidden' value='"+cartArray[i].beli+"' name='beli[]'></td>"+
+                            "<td>"+rupiah(cartArray[i].beli)+"<input type='hidden' value='"+cartArray[i].beli+"' name='beli[]'></td>"+
                             "<td>"+
                             
                             "<div class='input-group mb-3'>"+
-                                "<button class='btn btn-primary kurang' data-kode='"+cartArray[i].kode+"' > - </button>"+
-                                "<input type='number' class='item-count form-control text-center' readonly data-kode='"+cartArray[i].kode+"' value='"+cartArray[i].hitung+"' name='qty[]' max='"+cartArray[i].kuantitas+"' required>"+
+                                "<a class='kurang' data-kode='"+cartArray[i].kode+"' > - </a>"+
+                                "<a class='qty-barang'>"+cartArray[i].hitung+"</a>"+
+                                "<input type='hidden' class='item-count form-control text-center' readonly data-kode='"+cartArray[i].kode+"' value='"+cartArray[i].hitung+"' name='qty[]' max='"+cartArray[i].kuantitas+"' required>"+
                                 // "<button class='plus-item btn btn-primary input-group-addon' data-kode='"+cartArray[i].kode+"' > + </button>"+
-                                "<a class='btn btn-primary tambahkan' data-kode='"+cartArray[i].kode+"' > + </a>"+
+                                "<a class='tambahkan' data-kode='"+cartArray[i].kode+"' > + </a>"+
                             "</div>"+
                             
                             "</td>"+

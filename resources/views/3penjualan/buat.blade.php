@@ -2,6 +2,43 @@
 
 @extends('layout.layout')
 @section('konten')
+<style>
+    .qty-barang{
+    width: 5vw;
+    height: 5vh;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    }
+    .plus-item{
+        background-color: #0d6efd;
+    width: 30px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: white;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    }
+    .kurang{
+    background-color: #0d6efd;
+    width: 30px;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    color: white;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    }
+</style>
+
 <div class="row mt-3">
     <div class="col-md-12">
         <nav aria-label="breadcrumb">
@@ -59,7 +96,7 @@
                     <div style="height:370px; overflow:auto;" >
                         <table class="table table-hover table-striped show-cart" id="table_form">
                             <thead class="table-primary">
-                                <tr>
+                                <tr class='text-center'>
                                 <th class="col text-center">#</th>
                                 <th class="col" >Kode Barang</th>
                                 <th class="col" >Nama Barang</th>
@@ -348,7 +385,7 @@ var tgl = document.getElementById("tgl").valueAsDate = new Date();
         for(var i in cartArray)
         {
 
-            konten +="<tr>"+
+            konten +="<tr class='text-center'>"+
                             "<td><button class='btn btn-danger hapus' onclick='hapus(this)'data-kode='"+cartArray[i].kode+"' ><i class='bi bi-trash3'></i> </button> </td>"+
                             "<td>"+cartArray[i].kode+"<input type='hidden' value='"+cartArray[i].kode+"' name='kode[]'> </td>"+
                             "<td>"+cartArray[i].nama+"</td>"+
@@ -359,9 +396,10 @@ var tgl = document.getElementById("tgl").valueAsDate = new Date();
                             "<td>"+
                             
                             "<div class='input-group mb-3'>"+
-                                "<button class='btn btn-primary kurang' data-kode='"+cartArray[i].kode+"' > - </button>"+
-                                "<input type='number' class='item-count form-control text-center juaal' data-kode='"+cartArray[i].kode+"' value='"+cartArray[i].hitung+"' name='qty[]' max='"+cartArray[i].kuantitas+"' required>"+
-                                "<button class='plus-item btn btn-primary input-group-addon' data-kode='"+cartArray[i].kode+"' > + </button>"+
+                                "<a class='kurang' data-kode='"+cartArray[i].kode+"' > - </a>"+
+                                "<a class='qty-barang'>"+cartArray[i].hitung+"</a>"+
+                                "<input type='hidden' class='item-count form-control text-center juaal' data-kode='"+cartArray[i].kode+"' value='"+cartArray[i].hitung+"' name='qty[]' max='"+cartArray[i].kuantitas+"' required>"+
+                                "<a class='plus-item input-group-addon' data-kode='"+cartArray[i].kode+"' > + </a>"+
                             "</div>"+
                             
                             "</td>"+
