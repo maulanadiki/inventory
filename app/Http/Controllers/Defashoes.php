@@ -111,9 +111,27 @@ class Defashoes extends Controller
                 $EOQ[] = sqrt(2*$brg_kelel[$i]*$rata_rata);
                 // dd($brg_kel*$rata_rata);
             }
-            // dd($EOQ);
+            // dd($EOQ) economic order quantity;
            
-
+            // rumus mencari selisih
+            $minimal = ceil(sqrt(2*$permintaan*$rata_rata));
+            // dd($minimal);
+            $selisih = [];
+            $selisih_barang = [];
+            foreach ($barangss as $kl) {
+                foreach($minta as $mt){
+                    if($kl->kode_barang == $mt->kode_barang){
+                        $selisih = $kl->kuantitas - $mt->kel - $minimal;
+                        if($selisih == null || $selisih == ''){
+                            $selisih_barang = 0;
+                        }
+                        else{
+                            $selisih_barang="error kode";
+                        }
+                    }
+                }
+            }
+            // dd($selisih_barang);
 
 
             if($pembelian->isEmpty() )
@@ -154,10 +172,15 @@ class Defashoes extends Controller
             }
             // dd($data_penjualan_barang[26]);
 
-            
+        
 
 
         $pembelian = DB::table('procurment')->where('status_pengajuan','=','Pending')->count();
+        $penjualan= DB::table('sell')->where('stat_keluar','=','Pending')->count();
+        // $terima_barang = DB::table('pr')->where('statpo','!=','Rejected')->where('statpr','=','pending')->count();
+        $terima_barang = procurment::leftJoin('detailprocurment','detailprocurment.no_po','=','procurment.nopo')->leftJoin('pr','pr.nopo','=','procurment.nopo')->where('bukti_bayar','!=','Pending')->where('bukti','=','None')->count();
+        $employe = DB::table('employe')->count();
+
         $penerima = DB::table('pr')->count('nopo');
         $sell =DB::table('sell')->count('invoice');
         // dd($pembelianp);
@@ -169,11 +192,15 @@ class Defashoes extends Controller
        $beli = DB::table('procurment')->orderBy('created_at','desc')->paginate(10);
        $terima =DB::table('pr')->orderBy('created_at','desc')->paginate(10);
        $jual = DB::table('sell')->orderBy('created_at','desc')->paginate(10);
-       
+       $setTask_todo = $pembelian + $terima_barang + $penjualan;
+        $task_todo = session()->put('task_todo',$setTask_todo);
+        $task_pembelian = session()->put('task_beli',$pembelian);
+        $task_penjualan=session()->put('task_jual',$penjualan);
+        $task_terima=session()->put('task_terima',$terima_barang);
+        // dd($pembelian);
 
-
        
-        return view ('1dashboard.content',compact('minta','rata_rata','barangss','brgs','EOQ','brg_kel','keluar','data_beli','data_jual','data_label','pembelian','penerima','sell','vendor','barang','user','kuantitas'),['beli'=>$beli, 'terima'=>$terima,'jual'=>$jual] );
+        return view ('1dashboard.content',compact('selisih_barang','employe','terima_barang','penjualan','minta','rata_rata','barangss','brgs','EOQ','brg_kel','keluar','data_beli','data_jual','data_label','pembelian','penerima','sell','vendor','barang','user','kuantitas'),['beli'=>$beli, 'terima'=>$terima,'jual'=>$jual] );
        
     }
 
@@ -184,11 +211,12 @@ class Defashoes extends Controller
 
     public function authenticate(Request $request)
     {
-        $request->validate([
-            'email'=>'required|email|exists:users,email',
-            'password'=> 'required|max:30'
-        ],['email.exists'=>'this email doesnt exists on database']
-    );
+        // dd($request->all());
+    //     $request->validate([
+    //         'email'=>'required|email|exists:users,email',
+    //         'password'=> 'required|max:30'
+    //     ],['email.exists'=>'this email doesnt exists on database']
+    // );
     $creds = $request->only(['email','password']);
     // dd($creds);
     
@@ -208,6 +236,42 @@ class Defashoes extends Controller
         request()->session()->invalidate();
         request()->session()->regenerateToken();
         return redirect('/');
+    }
+
+    public function task_todo(request $request){
+        // dd("welcome");
+        $pembelian = procurment::leftJoin('detailprocurment','detailprocurment.no_po','=','procurment.nopo')->leftJoin('barang','barang.kode_barang','=','detailprocurment.kode_barang')->where('status_pengajuan','=','Pending')->get();
+        $penjualan = selling::leftJoin('selldetail','selldetail.invoice','=','sell.invoice')->leftJoin('barang','barang.kode_barang','=','selldetail.kode_barang')->where('stat_keluar','=','Pending')->get();
+        $penerimaan = procurment::leftJoin('detailprocurment','detailprocurment.no_po','=','procurment.nopo')->leftJoin('pr','pr.nopo','=','procurment.nopo')->where('bukti_bayar','!=','Pending')->where('bukti','=','None')->get();
+        $detailBeli = detailprocurment::groupBy('no_po')->select('no_po',DB::raw('count(*) as totno') )->get();
+        $detailjual = selldetail::groupBy('invoice')->select('invoice',DB::raw('count(*) as totsel'))->get();
+
+        $procurment= procurment::get();
+        $beli = [];
+        $jual = [];
+        $mulai = [];
+
+        foreach ($detailBeli as $db) {
+            foreach ($pembelian as $dt) {
+                if ($db->no_po == $dt->nopo) {
+                    $beli[$db->no_po][] = [$dt->kode_barang, $dt->nama_barang,$dt->qty ,$dt->ukuran,$dt->subtotal,$dt->grandtotal,$dt->dibuat]; // Gunakan operator [] untuk menambahkan elemen ke dalam array
+                    $mulai[$db->no_po][] = [$dt->created_at];
+                }
+            }
+        }
+        foreach ($detailjual as $dj) {
+            foreach ($penjualan as $pj) {
+                if ($dj->invoice == $pj->invoice) {
+                    $jual[$pj->invoice][] = [$pj->kode_barang, $pj->nama_barang,$pj->qty ,$pj->ukuran,$pj->subtotal,$pj->grandtotal]; // Gunakan operator [] untuk menambahkan elemen ke dalam array
+                }
+            }
+
+        } 
+        // dd($beli);
+
+
+        
+        return view('1dashboard.task_todo',compact('procurment','pembelian','penerimaan','penjualan','detailBeli'),['beli'=>$beli,'jual'=>$jual] );
     }
 
     /**

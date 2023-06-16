@@ -25,6 +25,7 @@ Route::get('/', [Defashoes::class, 'login'])->name('login');
 Route::post('/authenticate', [Defashoes::class, 'authenticate'])->name('authenticate');
 Route::get('/home', [Defashoes::class, 'index'])->name('home');
 Route::get('/logout', [Defashoes::class, 'logout'])->name('logout');
+Route::get('/task_todo', [Defashoes::class, 'task_todo'])->name('task_todo');
 
 
 // pembelian

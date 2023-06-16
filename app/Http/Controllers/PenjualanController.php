@@ -45,7 +45,7 @@ class PenjualanController extends Controller
         $hari = $tls.date('dmy');
         $po = selling::where('invoice','LIKE','%'.$hari.'%')->get();
         $po2 = $po->max();
-        $lengkap= str::substr($po2,28,4);
+        $lengkap= str::substr($po2,29,4);
 
         // dd($lengkap);
         if(empty($lengkap) )
@@ -68,7 +68,7 @@ class PenjualanController extends Controller
         // else
         // {
         //     $carino = selling::where('invoice','like','%'.$lengkap.'%')->get();
-        //     // dd($carino);
+            // dd($carino);
         //     $last =str::substr($po2,28,1);
         //     $next = $last+1;
         //     $notrans =$hari.$next;

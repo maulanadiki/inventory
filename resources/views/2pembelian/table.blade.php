@@ -2,32 +2,29 @@
 
 @extends('layout.layout')
 @section('konten')
-<div class="container-fluid mt-4 ms-2 pb-5 ps-1 pe-1 border shadow" style="background-color:#E8ECFC; border-radius:15px;" >
-    <div class="row mt-3">
-        <div class="col-md-4">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb ms-5">
-                    <li class="breadcrumb-item"><a href="{{url('home') }}" class="fs-5 jdl "  >Dashboard</a></li>
-                    <li class="breadcrumb-item active fs-5">Data Pembelian</li>
-                </ol>
-            </nav>
+<div class="container-fluid">
+    <div class="frame base-system">
+        <div class="row text-light">
+            <div class="col-md-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{url('home') }}" class="fs-5" >Dashboard</a></li>
+                        <li class="breadcrumb-item active fs-5 text-light">Data Pembelian</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="col-md-8 text-end">
+                <a href="{{route('pembelian.buat') }}" onclick="deletesession()" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                    </svg>    
+                    Buat Pembelian
+                </a>
+            </div>
         </div>
-        <div class="col-md-8 d-flex justify-content-end">
-            <a href="{{route('pembelian.buat') }}" onclick="deletesession()" class="btn btn-primary me-5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-            </svg>    
-            Buat Pembelian</a>
-        </div>
-    </div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-4"></div>
-        </div>
-    </div>
-    <div class="row justify-content-center ">
-        <div class="col-md-11 bg-light border rounded-3  mt-3 shadow">
-            <br>
+
+        <div class="row justify-content-center ">
+        <div class="col-md-12 p-3 bg-light border rounded-3  mt-3 shadow">
             <table id="example" class="table table-striped m-3" style="width:100%">
                 <thead>
                     <tr>
@@ -137,9 +134,8 @@
             <br>
         </div>
     </div>
+    </div>
 </div>
-
-
 
 <!-- modalnya -->
 <form action="{{route('barang.bayar') }}" method="post" enctype="multipart/form-data" >
@@ -162,6 +158,7 @@
     </div>
     </div>
 </form>
+
 
 
 <!-- modal detail -->

@@ -1,15 +1,16 @@
-<table id="brgmasuk" class="table table-striped dt-responsive nowrap" style="width:100%">
+<div class="col-md-12 p-3">
+    <table id="brgmasuk" class="table table-striped dt-responsive nowrap table-modulus">
         <thead>
             <tr>
-                <th class="col">#</th>
-                <th class="col">tanggal</th>
-                <th class="col">Dibuat</th>
-                <th class="col">Nomor PO</th>
-                <th class="col">Nama Vendor</th>
-                <th class="col">Subtotal</th>
-                <th class="col">Status Pengajuan</th>
-                <th class="col">Status Bayar</th>
-                <th class="col">.</th>
+                <th>#</th>
+                <th>tanggal</th>
+                <th>Dibuat</th>
+                <th>Nomor PO</th>
+                <th>Nama Vendor</th>
+                <th>Subtotal</th>
+                <th>Status Pengajuan</th>
+                <th>Status Bayar</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -43,9 +44,10 @@
                 <td class="col" colspan="4">Rp. {{number_format($data_beli->sum('grandtotal') )}}</td>
             </tr>
     </table>
+</div>
 
 
-<!-- modalnya pembelian-->
+    <!-- modalnya pembelian-->
 <div class="modal fade" id="detailvendor" height="300" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 
     <div class="modal-dialog modal-dialog-scrollable modal-xl">

@@ -85,8 +85,9 @@ class ReportController extends Controller
                    else {
                     $data_kel[$brg->kode_barang][] = 0;
                    }
-                   $data_keluar[] = array_sum($data_kel[$brg->kode_barang]);
                 }
+                $data_keluar[] = array_sum($data_kel[$brg->kode_barang]);
+
                 
             
             

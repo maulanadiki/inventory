@@ -44,7 +44,7 @@ class PembelianController extends Controller
         $hari = $tls.date('dmy');
         $po = procurment::where('nopo','LIKE','%'.$hari.'%')->get();
         $po2 = $po->max();
-        $lengkap= str::substr($po2,25,4);
+        $lengkap= str::substr($po2,26,4);
         // dd($lengkap);
 
         

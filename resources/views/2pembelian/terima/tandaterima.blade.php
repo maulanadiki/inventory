@@ -79,7 +79,7 @@ table{
             </tbody>
         </table>
         <table class="table">
-            <thead class="warna">
+            <thead class="warna" style="background: #35A9DB;">
                 <tr >
                     <th>No</th>
                     <th>Kode</th>

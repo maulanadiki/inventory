@@ -39,158 +39,165 @@
     }
 </style>
 
-<div class="row mt-3">
-    <div class="col-md-12">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb ms-3">
-                <li class="breadcrumb-item"><a href="{{url('home') }}" class="fs-5 jdl " >Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="{{url('pembelian') }}" class="fs-5 jdl " >Data Pembelian</a></li>
-                <li class="breadcrumb-item active fs-5" aria-current="page">Buat Pembelian</li>
-            </ol>
-        </nav>
-    </div>
-</div>
-<form action="{{route('savepo') }}" method="post">
+<div class="container-fluid">
+    <div class="frame base-system">
+        <!-- navigasi -->
+        <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{url('home') }}" class="fs-5  " >Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{{url('pembelian') }}" class="fs-5 " >Data Pembelian</a></li>
+                    <li class="breadcrumb-item active text-light fs-5" aria-current="page">Buat Pembelian</li>
+                </ul>
+            </nav>
+        </div>
+        <!-- maincontent -->
+        <form action="{{route('savepo') }}" method="post">
                 @csrf
-<div class="col-md-11 m-3">
-    <div class="container-fluid border border-3 shadow" style="border-radius:20px; background-color:#E8ECFC;">
-        <div class="row justify-content-center">
-            <!-- header -->
-            <div class="col-md-12 m-2">
-                <div class="row">
-                    <div class="col-md-2 mt-2">Nomor PO</div>
-                    <div class="col-md-4 mt-2"><input type="text" name="nopo" class="form-control" id="inputPassword" value="{{$notrans}}" readonly></div>
-                    <div class="col-md-2 mt-2">Tanggal Dibuat</div>
-                    <div class="col-md-4 mt-2"><input type="text" class="form-control" id="inputPassword" name="tanggal" value="<?php echo date('d M Y');?>" readonly></div>
-                    
-                    <div class="col-md-2 mt-2">Nama Vendor</div>
-                    <div class="col-md-4 mt-2">
-                        <select class="form-select" aria-label="Default select example" id="vendors" name="kode_vendor" required>
-                            <option selected>- Pilih Vendor -</option>
-                            @foreach($vendor as $vendor)
-                                <option value="{{$vendor->kode_vendor}}">{{$vendor->nama_vendor}}</option>
-                            @endforeach
-                        </select>
+            <div class="col-md-12">
+                <div class="container-fluid border border-3 shadow" style="border-radius:20px; background-color:#E8ECFC;">
+                    <div class="row justify-content-center">
+                        <!-- header -->
+                        <div class="col-md-12 m-2">
+                            <div class="row">
+                                <div class="col-md-2 mt-2">Nomor PO</div>
+                                <div class="col-md-4 mt-2"><input type="text" name="nopo" class="form-control" id="inputPassword" value="{{$notrans}}" readonly></div>
+                                <div class="col-md-2 mt-2">Tanggal Dibuat</div>
+                                <div class="col-md-4 mt-2"><input type="text" class="form-control" id="inputPassword" name="tanggal" value="<?php echo date('d M Y');?>" readonly></div>
+                                
+                                <div class="col-md-2 mt-2">Nama Vendor</div>
+                                <div class="col-md-4 mt-2">
+                                    <select class="form-select" aria-label="Default select example" id="vendors" name="kode_vendor" required>
+                                        <option selected>- Pilih Vendor -</option>
+                                        @foreach($vendor as $vendor)
+                                            <option value="{{$vendor->kode_vendor}}">{{$vendor->nama_vendor}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-2 mt-2">Kode Vendor</div>
+                                <div class="col-md-4 mt-2"><input type='text' class='form-control' name='vcode' id="vcode" readonly required></div>
+                                
+                                <div class="col-md-2 mt-2">Nama Bank</div>
+                                <div class="col-md-4 mt-2"><input type="text" class="form-control" name="vbank" id="nbank" readonly required></div>
+                                <div class="col-md-2 mt-2">Nomor Rekening</div>
+                                <div class="col-md-4 mt-2"><input type="text" class="form-control" name="norek" id="nnorek"  readonly required></div>
+                                
+                                <!-- <div class="col-md-3"></div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-3"></div> -->
+                                
+                                
+
+
+
+
+
+                            </div>
+                        </div>
+                        <!-- garis -->
+                        <div class="col-md-11"> <hr> </div>
+                        <!-- table Area -->
+                        
+                            <div class="col-md-12">
+                                <div style="height:370px; overflow:auto;" >
+                                    <table class="table table-hover table-striped show-cart" id="table_form">
+                                        <thead class="table-primary">
+                                            <tr class="text-center">
+                                            <th class="col text-center">#</th>
+                                            <th class="col" >Kode Barang</th>
+                                            <th class="col" >Nama Barang</th>
+                                            <th class="col" >Ukuran</th>
+                                            <th class="col" >Warna</th>
+                                            <th class="col" >Harga Satuan</th>
+                                            <th class="col" style="width:150px; text-align:center;">Qty</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tambah_item">
+                                            
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 border-top">
+                                <div class="row justify-content-start mt-3 mb-3">
+                                    <div class="col-md-2 d-flex justify-content-start mb-3">
+                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#item">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                        </svg>
+                                        Tambah Item
+                                        </button>
+                                    </div>
+
+                                    <div class="col-md-10 d-flex justify-content-end mb-3">
+                                        <button type="submit" class="btn btn-primary">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+                                                <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
+                                            </svg>
+                                    Simpan
+                                        </button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
                     </div>
-                    <div class="col-md-2 mt-2">Kode Vendor</div>
-                    <div class="col-md-4 mt-2"><input type='text' class='form-control' name='vcode' id="vcode" readonly required></div>
-                    
-                    <div class="col-md-2 mt-2">Nama Bank</div>
-                    <div class="col-md-4 mt-2"><input type="text" class="form-control" name="vbank" id="nbank" readonly required></div>
-                    <div class="col-md-2 mt-2">Nomor Rekening</div>
-                    <div class="col-md-4 mt-2"><input type="text" class="form-control" name="norek" id="nnorek"  readonly required></div>
-                    
-                    <!-- <div class="col-md-3"></div>
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3"></div>
-                    <div class="col-md-3"></div> -->
-                    
-                    
-
-
-
-
-
                 </div>
             </div>
-            <!-- garis -->
-            <div class="col-md-11"> <hr> </div>
-            <!-- table Area -->
-            
-                <div class="col-md-12">
-                    <div style="height:370px; overflow:auto;" >
-                        <table class="table table-hover table-striped show-cart" id="table_form">
-                            <thead class="table-primary">
-                                <tr class="text-center">
-                                <th class="col text-center">#</th>
-                                <th class="col" >Kode Barang</th>
-                                <th class="col" >Nama Barang</th>
-                                <th class="col" >Ukuran</th>
-                                <th class="col" >Warna</th>
-                                <th class="col" >Harga Satuan</th>
-                                <th class="col" style="width:150px; text-align:center;">Qty</th>
+        </form>
+        <!-- bagian modalnya -->
+        <div class="modal fade" id="item" tabindex="-1"  data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true" style="height:800px; overflow:auto;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">List Barang</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        <table class="table table-hover table-striped show-cart" id="table_modal" style="width:100%">
+                            <thead class="table-primary text-center">
+                                <tr>
+                                    <th class="col">#</th>
+                                    <th class="col" >Kode Barang</th>
+                                    <th class="col" >Nama Barang</th>
+                                    <th class="col" >Ukuran</th>
+                                    <th class="col" >Warna</th>
                                 </tr>
                             </thead>
                             <tbody id="tambah_item">
-                                
+                            @foreach($barang as $br)
+                            <!-- <tr onclick="value_check('{{$br->kode_barang}}','{{$br->nama_barang}}','{{$br->ukuran}}','{{$br->warna}}','{{$br->beli}}','{{$br->deskripsi}}' )" class="add-to-cart" > -->
+                                <!-- <td>
+                                    
+                                    <div class="form-check">
+                                        <input class="form-check-input checkbox" type="checkbox" value="{{$br->kode_barang}}"  id="flexCheckDefault" name="barang[]">
+                                    </div>
+                                </td> -->
+                            <tr class="add-to-cart" style="cursor:pointer;" data-id="{{$br->id}}" data-kode="{{$br->kode_barang}}" data-nama="{{$br->nama_barang}}" data-ukuran="{{$br->ukuran}}" data-warna="{{$br->warna}}" data-beli="{{$br->beli}}" data-deskripsi="{{$br->deskripsi}}" >    
+                            <td>{{$loop->iteration}} </td>
+                                <td>{{$br->kode_barang}}</td>
+                                <td>{{$br->nama_barang}}</td>
+                                <td>{{$br->ukuran}}</td>
+                                <td>{{$br->warna}}</td>
+                            </tr>
+                            @endforeach
                             </tbody>
                         </table>
-                    </div>
                 </div>
-
-                <div class="col-md-12 border-top">
-                    <div class="row justify-content-start mt-3 mb-3">
-                        <div class="col-md-2 d-flex justify-content-start mb-3">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#item">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                            </svg>
-                            Tambah Item
-                            </button>
-                        </div>
-
-                        <div class="col-md-10 d-flex justify-content-end mb-3">
-                            <button type="submit" class="btn btn-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
-                                    <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"/>
-                                </svg>
-                        Simpan
-                            </button>
-                        </div>
-                        
-                    </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-</form
+        <!-- sampe sini -->
 
 
-<!-- modalnya -->
-<div class="modal fade" id="item" tabindex="-1"  data-bs-backdrop="static" aria-labelledby="exampleModalLabel" aria-hidden="true" style="height:800px; overflow:auto;">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">List Barang</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-            <table class="table table-hover table-striped show-cart" id="table_modal" style="width:100%">
-                <thead class="table-primary text-center">
-                    <tr>
-                        <th class="col">#</th>
-                        <th class="col" >Kode Barang</th>
-                        <th class="col" >Nama Barang</th>
-                        <th class="col" >Ukuran</th>
-                        <th class="col" >Warna</th>
-                    </tr>
-                </thead>
-                <tbody id="tambah_item">
-                @foreach($barang as $br)
-                <!-- <tr onclick="value_check('{{$br->kode_barang}}','{{$br->nama_barang}}','{{$br->ukuran}}','{{$br->warna}}','{{$br->beli}}','{{$br->deskripsi}}' )" class="add-to-cart" > -->
-                    <!-- <td>
-                        
-                        <div class="form-check">
-                            <input class="form-check-input checkbox" type="checkbox" value="{{$br->kode_barang}}"  id="flexCheckDefault" name="barang[]">
-                        </div>
-                    </td> -->
-                <tr class="add-to-cart" style="cursor:pointer;" data-id="{{$br->id}}" data-kode="{{$br->kode_barang}}" data-nama="{{$br->nama_barang}}" data-ukuran="{{$br->ukuran}}" data-warna="{{$br->warna}}" data-beli="{{$br->beli}}" data-deskripsi="{{$br->deskripsi}}" >    
-                <td>{{$loop->iteration}} </td>
-                    <td>{{$br->kode_barang}}</td>
-                    <td>{{$br->nama_barang}}</td>
-                    <td>{{$br->ukuran}}</td>
-                    <td>{{$br->warna}}</td>
-                </tr>
-                @endforeach
-                </tbody>
-            </table>
-      </div>
-      <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+
+
     </div>
-  </div>
 </div>
 
 
@@ -478,11 +485,6 @@
                 });
 </script>
 <!-- sampe sini -->
-
-
-
-
-
 @foreach($barang as $brg)
 <script>
 function value_check(kobar,nabar,ukuran,warna,beli,deskripsi){
@@ -510,4 +512,6 @@ function value_check(kobar,nabar,ukuran,warna,beli,deskripsi){
 
 </script>
 @endforeach
+
+
 @endsection

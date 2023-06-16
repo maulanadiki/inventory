@@ -2,133 +2,174 @@
 
 @extends('layout.layout')
 @section('konten')
-<div class="container-fluid  mt-4 ms-2 pb-5 ps-1 pe-1 border shadow" style="background-color:#E8ECFC; border-radius:15px;">
-    <div class="row mt-3 mb-3">
-        <div class="col-md-5 ms-4 mt-3">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb ms-3">
-                    <li class="breadcrumb-item"><a class="jdl fs-5" href="{{url('home') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a class="jdl text-secondary fs-5" href="#">Tabel Karyawan</a></li>
-                </ol>
-            </nav>
-        </div>
-        <div class="col-md-6 ms-5">
-            <div class="col-md-12 d-flex justify-content-end mt-4">
-                    <button class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
-                        </svg>    
-                    Daftar Karyawan</button>           
+<div class="container-fluid">
+    <div class="frame base-system">
+        <div class="row">
+            <div class="col-md-4">
+                <nav aria-label="breadcrumb">
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a class="jdl fs-5" href="{{url('home') }}">Dashboard</a></li>
+                        <li class="breadcrumb-item fs-5 text-light">Tabel Karyawan</li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-md-8 text-end">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+                    </svg>
+                    Daftar Karyawan</button>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-center ">
-        <div class="col-md-11 bg-light border rounded-3  mt-1 shadow">
-            <br>
-            <table class="table table-hover " id="tabel_karyawan">
-                <thead>
-                    <tr class="table-primary">
-                        <th class="col" style="text-align:center;">No.</th>
-                        <th class="col" style="text-align:center;">NIK</th>
-                        <th class="col" style="text-align:center;">NPWP</th>
-                        <th class="col" style="text-align:center;">Nama</th>
-                        <th class="col" style="text-align:center;">Tempat, Tanggal Lahir</th>
-                        <th class="col" style="text-align:center;">Jenis Kelamin</th>
-                        <th class="col" style="text-align:center;">Jabatan</th>
-                        <th class="col" style="text-align:center;">Akses</th>
-                        <th class="colo"></th>
-                    </tr>
-                </thead>
 
-                <tbody>
-                    @foreach($employe as $user)
-                    <tr align="center">
-                        <th style="text-align:center;"  data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
-                        onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">{{$loop ->iteration}}</th>
-                        <td  data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
-                        onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">{{$user->nik}}</td>
-                        <td  data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
-                        onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">{{$user->npwp}}</td>
-                        <td data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
-                        onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">{{$user->nama}}</td>
-                        <td data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
-                        onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">{{$user->tempat}}, {{$user->tanggal}}</td>
-                        @php
-                        if($user->kelamin == "L")
-                        {$kelamin= "Laki - Laki";}
-                        else
-                        {$kelamin = "Perempuan";}
-                        @endphp
-                        <td data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
-                        onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">{{$kelamin}}</td>
-                        @php
+        <div class="row">
+            <div class="col-md-12 bg-light border rounded-3 shadow p-3">
+                <table class="table table-hover " id="tabel_karyawan">
+                    <thead>
+                        <tr class="table-primary">
+                            <th class="col" style="text-align:center;">No.</th>
+                            <th class="col" style="text-align:center;">NIK</th>
+                            <th class="col" style="text-align:center;">NPWP</th>
+                            <th class="col" style="text-align:center;">Nama</th>
+                            <th class="col" style="text-align:center;">Tempat, Tanggal Lahir</th>
+                            <th class="col" style="text-align:center;">Jenis Kelamin</th>
+                            <th class="col" style="text-align:center;">Jabatan</th>
+                            <th class="col" style="text-align:center;">Akses</th>
+                            <th class="colo"></th>
+                        </tr>
+                    </thead>
 
-                        if ($user->jabatan == 1)
-                        {
-                        $jabatan = "OWNER" ;
-                        }
+                    <tbody>
+                        @foreach($employe as $user)
+                        <tr align="center">
+                            <th style="text-align:center;" data-bs-toggle="modal" data-bs-target="#detailvendor"
+                                style="cursor: pointer;"
+                                onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">
+                                {{$loop ->iteration}}</th>
+                            <td data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
+                                onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">
+                                {{$user->nik}}</td>
+                            <td data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
+                                onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">
+                                {{$user->npwp}}</td>
+                            <td data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
+                                onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">
+                                {{$user->nama}}</td>
+                            <td data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
+                                onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">
+                                {{$user->tempat}}, {{$user->tanggal}}</td>
+                            @php
+                            if($user->kelamin == "L")
+                            {$kelamin= "Laki - Laki";}
+                            else
+                            {$kelamin = "Perempuan";}
+                            @endphp
+                            <td data-bs-toggle="modal" data-bs-target="#detailvendor" style="cursor: pointer;"
+                                onclick="employed('{{$user->nama}}','{{$user->alamat}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->nik}}','{{$user->npwp}}','{{$user->bank}}','{{$user->norek}}','{{$user->id}}')">
+                                {{$kelamin}}</td>
+                            @php
 
-                        elseif ($user->jabatan == 3)
-                        {$jabatan = "PURCHASING"; }
+                            if ($user->jabatan == 1)
+                            {
+                            $jabatan = "OWNER" ;
+                            }
 
-                        elseif($user->jabatan == 2)
-                        {$jabatan = "FINANCE";}
+                            elseif ($user->jabatan == 3)
+                            {$jabatan = "PURCHASING"; }
 
-                        else
-                        {
-                        $jabatan = "MARKETING";
-                        }
+                            elseif($user->jabatan == 2)
+                            {$jabatan = "FINANCE";}
+
+                            else
+                            {
+                            $jabatan = "MARKETING";
+                            }
 
 
-                        @endphp
-                        <td>{{$jabatan}}</td>
-                        <td>
-                            @if ($user->akses == "Approved")
-                            <div class="dropdown">
-                                <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Approved
-                                </button>
-                                <ul class="dropdown-menu">
-                                   <li><a class="dropdown-item" href="{{route('karyawan.update',[$user->id,'Reject'] )}}"><i class="bi bi-x-circle"></i> Reject</a></li>
-                                    <li><a class="dropdown-item" href="{{route('karyawan.update',[$user->id,'Pending'] )}}"><i class="bi bi-exclamation-circle"></i> Pending</a></li>
-                                    <li><a class="dropdown-item" href="#" onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')" data-bs-toggle="modal" data-bs-target="#edit_karyawan"><i class="bi bi-pencil-square"></i> Edit</a></li>
-                                </ul>
-                            </div>
-                                
-                            @elseif($user->akses == "Reject")
-                            <div class="dropdown">
-                                <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-x-circle"></i>   Reject
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{route('karyawan.update',[$user->id,'Approved'] )}}"><i class="bi bi-check-circle"></i> Approved</a></li>
-                                    <li><a class="dropdown-item" href="{{route('karyawan.update',[$user->id,'Pending'] )}}"><i class="bi bi-exclamation-circle"></i> Pending</a></li>
-                                    <li><a class="dropdown-item" href="#"  onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')" data-bs-toggle="modal" data-bs-target="#edit_karyawan"><i class="bi bi-pencil-square"></i> Edit</a></li>
-                                </ul>
-                            </div>
-                            @else
-                            <div class="dropdown">
-                                <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-exclamation-circle"></i>  Pending
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="{{route('karyawan.update',[$user->id,'Approved'] )}}"><i class="bi bi-check-circle"></i> Approved</a></li>
-                                    <li><a class="dropdown-item" href="{{route('karyawan.update',[$user->id,'Reject'] )}}"><i class="bi bi-x-circle"></i> Rejected</a></li>
-                                     <li><a class="dropdown-item" href="#" onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')" data-bs-toggle="modal" data-bs-target="#edit_karyawan"><i class="bi bi-pencil-square"></i> Edit</a></li>
-                                </ul>
-                            </div>
-                            @endif
-                        </td>
-                        <td><a href="{{route('karyawan.hapus',$user->email) }}" class="btn btn-danger"> <i class="bi bi-trash3"></i></a></td>
+                            @endphp
+                            <td>{{$jabatan}}</td>
+                            <td>
+                                @if ($user->akses == "Approved")
+                                <div class="dropdown">
+                                    <button class="btn btn-success dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Approved
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"
+                                                href="{{route('karyawan.update',[$user->id,'Reject'] )}}"><i
+                                                    class="bi bi-x-circle"></i> Reject</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{route('karyawan.update',[$user->id,'Pending'] )}}"><i
+                                                    class="bi bi-exclamation-circle"></i> Pending</a></li>
+                                        <li><a class="dropdown-item" href="#"
+                                                onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')"
+                                                data-bs-toggle="modal" data-bs-target="#edit_karyawan"><i
+                                                    class="bi bi-pencil-square"></i> Edit</a></li>
+                                    </ul>
+                                </div>
 
-                    </tr>
+                                @elseif($user->akses == "Reject")
+                                <div class="dropdown">
+                                    <button class="btn btn-danger dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-x-circle"></i> Reject
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"
+                                                href="{{route('karyawan.update',[$user->id,'Approved'] )}}"><i
+                                                    class="bi bi-check-circle"></i> Approved</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{route('karyawan.update',[$user->id,'Pending'] )}}"><i
+                                                    class="bi bi-exclamation-circle"></i> Pending</a></li>
+                                        <li><a class="dropdown-item" href="#"
+                                                onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')"
+                                                data-bs-toggle="modal" data-bs-target="#edit_karyawan"><i
+                                                    class="bi bi-pencil-square"></i> Edit</a></li>
+                                    </ul>
+                                </div>
+                                @else
+                                <div class="dropdown">
+                                    <button class="btn btn-warning dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-exclamation-circle"></i> Pending
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"
+                                                href="{{route('karyawan.update',[$user->id,'Approved'] )}}"><i
+                                                    class="bi bi-check-circle"></i> Approved</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{route('karyawan.update',[$user->id,'Reject'] )}}"><i
+                                                    class="bi bi-x-circle"></i> Rejected</a></li>
+                                        <li><a class="dropdown-item" href="#"
+                                                onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')"
+                                                data-bs-toggle="modal" data-bs-target="#edit_karyawan"><i
+                                                    class="bi bi-pencil-square"></i> Edit</a></li>
+                                    </ul>
+                                </div>
+                                @endif
+                            </td>
+                            <td><a href="{{route('karyawan.hapus',$user->email) }}" class="btn btn-danger"> <i
+                                        class="bi bi-trash3"></i></a></td>
 
-                    @endforeach
-                </tbody>
-            </table>
+                        </tr>
+
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
         </div>
+
+
+
+
     </div>
 </div>
+
+
 
 <!-- modal Detail-->
 <div class="modal fade" id="detailvendor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -355,7 +396,6 @@
                     <div class="col-md-4 mt-2">
                     <select class="form-select" aria-label="Default select example" name="jabatan" require>
                             <option value="" selected>- Jabatan -</option>
-                            <option value="1">Owner</option>
                             <option value="2">Finance</option>
                             <option value="3">Purchasing</option>
                             <option value="4">Sales Marketing</option>

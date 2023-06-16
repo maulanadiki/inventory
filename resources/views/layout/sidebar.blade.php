@@ -1,8 +1,12 @@
-<div class="col-md-2" style="height:100%;position:fixed; background-color:#003865; " >
-    <div class="col-md-12 mt-3 ms-5"><img src="{{ asset('defa/logo.png') }}" width="100"><br>
-        <span class="text-justify" style="color:#fc8c3a;">DEFA</span><span class="text-light"> Shoes</span> 
+<div class="sidebar-logo text-center justify-content-center">
+    <img src="{{ asset('defa/logo.png') }}" width="100" class>
+    <div class="sidebar-logo__wording">
+        <p class="text-justify" style="color:#fc8c3a;">DEFA</p><span class="text-light"> Shoes</span>
     </div>
-            <ul class="nav flex-column nav-pills list-group list-group-flush mt-4">
+</div>
+
+<nav>
+<ul class="nav flex-column nav-pills list-group list-group-flush mt-4">
                 <!-- dashboard -->
                 <li class="nav-item kotak">
                     <a class="nav-link text-light mb-2 {{Request::is('home') ? 'active' : '' }}" style="cursor:pointer;" href="{{url('home') }}" id="dashboard"><i class="fa fa-home" aria-hidden="true"></i>&nbsp; &nbsp;  Dashboard</a>
@@ -88,4 +92,4 @@
                 </li>
                 @endif
             </ul>
-</div>
+</nav>

@@ -9,7 +9,7 @@
                 <th class="col">Telp</th>
                 <th class="col">Marketplace</th>
                 <th class="col">Grandotal</th>
-                <th class="col">.</th>
+                <th class="col"></th>
             </tr>
         </thead>
         <tbody>
