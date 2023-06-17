@@ -238,41 +238,7 @@ class Defashoes extends Controller
         return redirect('/');
     }
 
-    public function task_todo(request $request){
-        // dd("welcome");
-        $pembelian = procurment::leftJoin('detailprocurment','detailprocurment.no_po','=','procurment.nopo')->leftJoin('barang','barang.kode_barang','=','detailprocurment.kode_barang')->where('status_pengajuan','=','Pending')->get();
-        $penjualan = selling::leftJoin('selldetail','selldetail.invoice','=','sell.invoice')->leftJoin('barang','barang.kode_barang','=','selldetail.kode_barang')->where('stat_keluar','=','Pending')->get();
-        $penerimaan = procurment::leftJoin('detailprocurment','detailprocurment.no_po','=','procurment.nopo')->leftJoin('pr','pr.nopo','=','procurment.nopo')->where('bukti_bayar','!=','Pending')->where('bukti','=','None')->get();
-        $detailBeli = detailprocurment::groupBy('no_po')->select('no_po',DB::raw('count(*) as totno') )->get();
-        $detailjual = selldetail::groupBy('invoice')->select('invoice',DB::raw('count(*) as totsel'))->get();
-
-        $procurment= procurment::get();
-        $beli = [];
-        $jual = [];
-        $mulai = [];
-
-        foreach ($detailBeli as $db) {
-            foreach ($pembelian as $dt) {
-                if ($db->no_po == $dt->nopo) {
-                    $beli[$db->no_po][] = [$dt->kode_barang, $dt->nama_barang,$dt->qty ,$dt->ukuran,$dt->subtotal,$dt->grandtotal,$dt->dibuat]; // Gunakan operator [] untuk menambahkan elemen ke dalam array
-                    $mulai[$db->no_po][] = [$dt->created_at];
-                }
-            }
-        }
-        foreach ($detailjual as $dj) {
-            foreach ($penjualan as $pj) {
-                if ($dj->invoice == $pj->invoice) {
-                    $jual[$pj->invoice][] = [$pj->kode_barang, $pj->nama_barang,$pj->qty ,$pj->ukuran,$pj->subtotal,$pj->grandtotal]; // Gunakan operator [] untuk menambahkan elemen ke dalam array
-                }
-            }
-
-        } 
-        // dd($beli);
-
-
-        
-        return view('1dashboard.task_todo',compact('procurment','pembelian','penerimaan','penjualan','detailBeli'),['beli'=>$beli,'jual'=>$jual] );
-    }
+    
 
     /**
      * Show the form for creating a new resource.

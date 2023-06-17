@@ -14,6 +14,7 @@
                 </nav>
             </div>
             <div class="col-md-8 text-end">
+            @if(auth()->user()->level == 1  || auth()->user()->level == 2)
                 <a href="{{route('vendor.buat') }}" class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
                         class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
@@ -21,6 +22,7 @@
                             d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                     </svg>
                     Vendor</a>
+            @endif
             </div>
         </div>
         <div class="col-md-12 border rounded-3 shadow bg-light p-3">
@@ -48,8 +50,13 @@
                         <td>{{$vnd->bank}}, {{$vnd->norek}}</td>
                         <td>{{$vnd->alamat}}</td>
                         <td>
-                            <a href="{{route('vendor.hapus', $vnd->id) }}" class="btn btn-danger"> <i
-                                    class="bi bi-trash3"></i></a>
+                            @if(auth()->user()->level == 1  || auth()->user()->level == 2)
+                            <a href="{{route('vendor.hapus', $vnd->id) }}" class="btn btn-danger"> 
+                                <i class="bi bi-trash3"></i>
+                            </a>
+                            @endif
+
+
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detail"
                                 onclick="tampil('{{$vnd->kode_vendor}}','{{$vnd->nik}}','{{$vnd->npwp}}','{{$vnd-> nama_pemilik}}','{{$vnd->nama_vendor}}','{{$vnd->telp}}','{{$vnd->alamat}}','{{$vnd->bank}}','{{$vnd->norek}}','{{$vnd->f_nik}}','{{$vnd->f_npwp}}','{{$vnd->f_tabungan}}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"

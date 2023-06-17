@@ -1,5 +1,3 @@
-
-
 @section('title','List Tugas')
 
 @extends('layout.layout')
@@ -20,22 +18,11 @@ use Carbon\Carbon;
 
         <div class="col-md-12 bg-light p-3">
             <div style="position:relative; display:flex; flex-direction:row; gap:20px; height:70vh;">
+                @if(auth()->user()->level == 1 || auth()->user()->level == 2)
                 <!-- pengajuan hari ini -->
                 <div style="width:50%; overflow:auto;">
                     <h4>Pengajuan Hari ini</h4>
-
-                    <?php 
-                    $nilai = [];
-                    $tglHariIni = date('Y-m-d');
-                    foreach($beli as $no_po => $data){
-                        foreach ($data as $i){
-                            $nilai = $i[6];
-                            break;
-                        }
-                    }
-                    
-                    ?>
-
+                    <?php $tglHariIni = date('Y-m-d');?>
                     <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -47,73 +34,81 @@ use Carbon\Carbon;
                             <div id="collapseOne" class="accordion-collapse collapse show"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    @foreach ($beli as $no_po => $data)
                                     @foreach($procurment as $pro)
-                                    @if($pro->nopo == $no_po)
-                                        @if($tglHariIni == $nilai)
-                                            <div style="border:2px solid black; padding:2px; margin-bottom:5px;">
-                                                <table class="table table-borderless">
-                                                    <thead>
-                                                        <tr>
-                                                            <td colspan="4">Nomor PO : <b>{{$no_po}}</b> </td>
-                                                            <td colspan="2" class="text-end">
-                                                                <div class="dropdown">
-                                                                    <button class="btn btn-warning dropdown-toggle"
-                                                                        type="button" data-bs-toggle="dropdown"
-                                                                        aria-expanded="false">
-                                                                        Pending
-                                                                    </button>
-                                                                    <ul class="dropdown-menu">
-                                                                        <li><a class="dropdown-item" href="{{route('barang.status',[$no_po,'Approved']  ) }}">Approved</a></li>
-                                                                        <li><a class="dropdown-item" href="{{route('barang.status',[$no_po,'Rejected']  ) }}">Rejected</a></li>
+                                    @if($pro->dibuat == $tglHariIni)
+                                    <div style="border:2px solid black; padding:2px; margin-bottom:10px;">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3">Nomor PO : <b>{{$pro->nopo}}</b></td>
+                                                    <td colspan="2" class="text-end">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-warning dropdown-toggle"
+                                                                type="button" data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                                Pending
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" data-bs-target="#upload"
+                                                                        onclick="modal('{{$pro->nopo}}')"
+                                                                        data-bs-toggle="modal"
+                                                                        style="cursor:pointer;">Approved</a></li>
+                                                                <li><a class="dropdown-item"
+                                                                        href="{{route('task_status',[$pro->nopo,'Rejected']  ) }}">Rejected</a>
+                                                                </li>
 
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="4">
-                                                            <?php
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+
+                                                        <?php
                                                                 $uploadedDate = Carbon::parse($pro->created_at);
                                                                 $currentDate = Carbon::now();
                                                                 $selisih = $uploadedDate->diff($currentDate);
-                                                                $selisihWaktu = $selisih->format('%d hari, %H jam, %i menit');
+                                                                $selisihJam = $selisih->format('%H jam');
+                                                                $selisihmnt = $selisih->format('%i menit');
                                                             ?>
-                                                            Dibuat Sejak : {{$selisih->format('%H Jam, %i menit')}}</td>
-                                                        </tr>
-
-                                                        <tr align="center">
-                                                            <td class="col">#</td>
-                                                            <td class="col">Kode Barang</td>
-                                                            <td class="col">Nama Barang</td>
-                                                            <td class="col">Ukuran</td>
-                                                            <td class="col">QTY</td>
-                                                            <td class="col">Subtotal</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($data as $item)
-                                                        <tr class="text-center">
-                                                            <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $item[0] }}</td>
-                                                            <td>{{ $item[1] }}</td>
-                                                            <td>{{ $item[2] }}</td>
-                                                            <td>{{ $item[3] }}</td>
-                                                            <td>Rp.{{ number_format($item[4]) }}</td>
-                                                        </tr>
-                                                        
-                                                        @endforeach
-                                                        <tr class="table-primary">
-                                                            <td colspan="4"><b> Grandtotal </b></td>
-                                                            <td colspan="2"><b> Rp. {{number_format($item[4])}}</b></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        @endif
-                                    
+                                                        Dibuat sejak : <b style="font-size:1.1em;">
+                                                            @if($selisihJam > 1)
+                                                            {{$selisihJam}} , {{$selisihmnt}}
+                                                            @else
+                                                            {{$selisihmnt}}
+                                                            @endif
+                                                        </b> yang lalu
+                                                    </td>
+                                                </tr>
+                                                <tr align="center">
+                                                    <td class="col">Kode Barang</td>
+                                                    <td class="col">Nama Barang</td>
+                                                    <td class="col">Ukuran</td>
+                                                    <td class="col">QTY</td>
+                                                    <td class="col">Subtotal</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($pembelian as $pb)
+                                                @if($pb->no_po == $pro->nopo)
+                                                <tr class="text-center">
+                                                    <td>{{$pb->kode_barang}}</td>
+                                                    <td>{{$pb->nama_barang}}</td>
+                                                    <td>{{$pb->ukuran}}</td>
+                                                    <td>{{$pb->qty}}</td>
+                                                    <td>Rp. {{number_format($pb->subtotal)}}</td>
+                                                </tr>
+                                                @endif
+                                                @endforeach
+                                                <tr class="table-info">
+                                                    <td colspan="3"><b> Grandtotal</b></td>
+                                                    <td colspan="2" class="text-center"><b>Rp
+                                                            {{number_format($pro->grandtotal)}}</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     @endif
-                                    @endforeach
                                     @endforeach
                                 </div>
                             </div>
@@ -128,7 +123,63 @@ use Carbon\Carbon;
                             <div id="collapseTwo" class="accordion-collapse collapse"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                    penerimaan
+                                    @foreach($receive as $rc)
+                                    <?php
+                                    $tgl = Carbon::parse($rc->updated_at);
+                                    $tglrc = $tgl->format('Y-m-d');
+                                        $update = Carbon::parse($rc->updated_at);
+                                        $curr = Carbon::now();
+                                        $sel = $update->diff($curr);
+                                        $seljam = $sel->format('%H jam');
+                                        $selmnt = $sel->format('%i menit');
+                                    ?>
+                                    @if($tglrc == $tglHariIni)
+                                    <div style="border:2px solid black; padding:2px; margin-bottom:10px;">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3">Nomor PO : <b>{{$rc->nopo}}</b></td>
+                                                    <td colspan="2" class="text-end">
+                                                        <div class="dropdown">
+                                                            <a href="{{route('penerima.terima',$rc->nopo) }}"
+                                                                class="btn btn-warning">Terima Barang </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        Di bayarkan sejak : <b style="font-size:1.1em;">
+                                                            @if($seljam > 1)
+                                                            {{$seljam}} , {{$selmnt}}
+                                                            @else
+                                                            {{$selmnt}}
+                                                            @endif
+                                                        </b> yang lalu
+                                                    </td>
+                                                </tr>
+                                                <tr align="center">
+                                                    <td class="col">Kode</td>
+                                                    <td class="col" colspan="2">Nama Vendor</td>
+                                                    <td class="col" colspan="2">Grandtotal</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($vendors as $vnd)
+                                                @if($vnd->nopo == $rc->nopo)
+                                                <tr class="text-center">
+                                                    <td>{{$vnd->kode_vendor}}</td>
+                                                    <td colspan="2">{{$vnd->nama_vendor}}</td>
+                                                    <td colspan="2">Rp. {{number_format($vnd->grandtotal)}}</td>
+
+                                                </tr>
+
+                                                @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -142,30 +193,69 @@ use Carbon\Carbon;
                             <div id="collapseThree" class="accordion-collapse collapse"
                                 data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
-                                @foreach ($jual as $inv => $data)
-                                    <div style="border:2px solid black; padding:2px; margin-bottom:5px;">
+                                    @foreach($sell as $sl)
+                                    <?php
+                                    $createdDate = Carbon::parse($sl->created_at);
+                                    $tanggal = $createdDate->format('Y-m-d');
+                                    ?>
+                                    @if($tanggal == $tglHariIni)
+                                    <div style="border:2px solid black; padding:2px; margin-bottom:10px;">
                                         <table class="table table-borderless">
                                             <thead>
                                                 <tr>
-                                                    <td colspan="4">Invoice : <b>{{$inv}}</b></td>
+                                                    <td colspan="3">Nomor PO : <b>{{$sl->invoice}}</b></td>
                                                     <td colspan="2" class="text-end">
-                                                        <div class="dropdown">
-                                                            <button class="btn btn-warning dropdown-toggle"
-                                                                type="button" data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                                Pending
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#">Approved</a></li>
-                                                                <li><a class="dropdown-item" href="#">Rejected</a></li>
+                                                        <form method="get"
+                                                            action="{{ route('task.barang_keluar',['Approved',$sl->invoice])}}">
+                                                            @csrf
+                                                            <div class="dropdown">
+                                                                <button
+                                                                    class="btn btn-warning text-dark dropdown-toggle"
+                                                                    type="button" data-bs-toggle="dropdown"
+                                                                    aria-expanded="false">
+                                                                    PENDING
+                                                                </button>
 
-                                                            </ul>
-                                                        </div>
+                                                                <ul class="dropdown-menu">
+                                                                    <li>
+                                                                        @foreach( $kobar as $kb)
+                                                                        @if($sl->invoice == $kb->invoice)
+
+                                                                        @php
+                                                                        $hasil = $kb->kuantitas - $kb->qty;
+                                                                        @endphp
+                                                                        <input type="hidden" name="kobar[]"
+                                                                            value="{{$kb->kode_barang}}">
+                                                                        <input type="hidden" name="qty[]"
+                                                                            value="{{ $hasil }}">
+                                                                        @endif
+
+                                                                        @endforeach
+                                                                        <button class="dropdown-item" type="submit">
+                                                                            Approved</button>
+                                                                    </li>
+                                                                    <li><a class="dropdown-item"
+                                                                            href="{{ route('task.barang_keluar', ['Rejected',$sl->invoice])}}">Rejected</a>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </div>
+                                                        </form>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td colspan="5">
 
+                                                        <?php
+                                                                $uploadedDate = Carbon::parse($sl->created_at);
+                                                                $currentDate = Carbon::now();
+                                                                $selisihh = $uploadedDate->diff($currentDate);
+                                                                $selisihWaktunya = $selisihh->format('%H jam, %i menit');
+                                                            ?>
+                                                        Dibuat sejak : {{$selisihWaktunya}}
+                                                    </td>
+                                                </tr>
                                                 <tr align="center">
-                                                    <td class="col">#</td>
                                                     <td class="col">Kode Barang</td>
                                                     <td class="col">Nama Barang</td>
                                                     <td class="col">Ukuran</td>
@@ -174,30 +264,34 @@ use Carbon\Carbon;
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($data as $item)
-                                                <tr class="text-center">
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $item[0] }}</td>
-                                                    <td>{{ $item[1] }}</td>
-                                                    <td>{{ $item[2] }}</td>
-                                                    <td>{{ $item[3] }}</td>
-                                                    <td>Rp.{{ number_format($item[4]) }}</td>
+                                                @foreach($penjualan as $pj)
+                                                @if($pj->invoice == $sl->invoice)
+                                                <tr>
+                                                    <td>{{$pj->kode_barang}}</td>
+                                                    <td>{{$pj->nama_barang}}</td>
+                                                    <td>{{$pj->ukuran}}</td>
+                                                    <td>{{$pj->qty}}</td>
+                                                    <td>Rp. {{number_format($pj->subtotal)}}</td>
                                                 </tr>
-                                                
+                                                @endif
+
                                                 @endforeach
-                                                <tr class="table-primary">
-                                                    <td colspan="4"><b> Grandtotal </b></td>
-                                                    <td colspan="2"><b> Rp. {{number_format($item[5])}}</b></td>
+                                                <tr class="table-info">
+                                                    <td colspan="3"><b> Grandtotal</b></td>
+                                                    <td colspan="2" class="text-center"><b>Rp
+                                                            {{number_format($sl->grandtotal)}}</b></td>
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    </div> 
+                                    </div>
+                                    @endif
                                     @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <hr>
                 <!-- pengajuan terpending -->
                 <div style="width:50%; height:100%; overflow:auto;">
@@ -211,78 +305,82 @@ use Carbon\Carbon;
                                     Pembelian
                                 </button>
                             </h2>
-                            <div id="terpending_beli" class="accordion-collapse collapse show" data-bs-parent="#terpending">
-                            <div class="accordion-body">
-                                    @foreach ($beli as $no_po => $data)
+                            <div id="terpending_beli" class="accordion-collapse collapse show"
+                                data-bs-parent="#terpending">
+                                <div class="accordion-body">
                                     @foreach($procurment as $pro)
-                                    @if($pro->nopo == $no_po)
-                                        @if($tglHariIni != $nilai)
-                                            <div style="border:2px solid black; padding:2px; margin-bottom:5px;">
-                                                <table class="table table-borderless">
-                                                    <thead>
-                                                        <tr>
-                                                            <td colspan="4">Nomor PO : <b>{{$no_po}}</b> </td>
-                                                            <td colspan="2" class="text-end">
-                                                                <div class="dropdown">
-                                                                    <button class="btn btn-warning dropdown-toggle"
-                                                                        type="button" data-bs-toggle="dropdown"
-                                                                        aria-expanded="false">
-                                                                        Pending
-                                                                    </button>
-                                                                    <ul class="dropdown-menu">
-                                                                        <li><a class="dropdown-item" href="{{route('barang.status',[$no_po,'Approved']  ) }}">Approved</a></li>
-                                                                        <li><a class="dropdown-item" href="{{route('barang.status',[$no_po,'Rejected']  ) }}">Rejected</a></li>
+                                    @if($pro->dibuat !== $tglHariIni)
+                                    <div style="border:2px solid black; padding:2px; margin-bottom:10px;">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3">Nomor PO : <b>{{$pro->nopo}}</b></td>
+                                                    <td colspan="2" class="text-end">
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-warning dropdown-toggle"
+                                                                type="button" data-bs-toggle="dropdown"
+                                                                aria-expanded="false">
+                                                                Pending
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a class="dropdown-item" data-bs-target="#upload"
+                                                                        onclick="modal('{{$pro->nopo}}')"
+                                                                        data-bs-toggle="modal"
+                                                                        style="cursor:pointer;">Approved</a>
+                                                                </li>
+                                                                <li><a class="dropdown-item"
+                                                                        href="{{route('task_status',[$pro->nopo,'Rejected']  ) }}">Rejected</a>
+                                                                </li>
 
-                                                                    </ul>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td colspan="4">
-                                                            <?php
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+
+                                                        <?php
                                                                 $uploadedDate = Carbon::parse($pro->created_at);
                                                                 $currentDate = Carbon::now();
                                                                 $selisih = $uploadedDate->diff($currentDate);
-                                                                $selisihWaktu = $selisih->format('%d hari, %H jam');
+                                                                $selisihWaktu = $selisih->format('%d hari,%H jam');
                                                             ?>
-                                                            Dibuat Sejak :<b> {{$selisihWaktu}} </b></td>
-                                                        </tr>
-
-                                                        <tr align="center">
-                                                            <td class="col">#</td>
-                                                            <td class="col">Kode Barang</td>
-                                                            <td class="col">Nama Barang</td>
-                                                            <td class="col">Ukuran</td>
-                                                            <td class="col">QTY</td>
-                                                            <td class="col">Subtotal</td>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @foreach ($data as $item)
-                                                        <tr class="text-center">
-                                                            <td>{{ $loop->iteration }}</td>
-                                                            <td>{{ $item[0] }}</td>
-                                                            <td>{{ $item[1] }}</td>
-                                                            <td>{{ $item[2] }}</td>
-                                                            <td>{{ $item[3] }}</td>
-                                                            <td>Rp.{{ number_format($item[4]) }}</td>
-                                                        </tr>
-                                                        
-                                                        @endforeach
-                                                        <tr class="table-primary">
-                                                            <td colspan="4"><b> Grandtotal </b></td>
-                                                            <td colspan="2"><b> Rp. {{number_format($item[4])}}</b></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        @endif
-                                    @else
-                                    GAGAL
+                                                        Dibuat sejak : <b style="font-size:1.1em;">{{$selisihWaktu}}</b>
+                                                        yang lalu
+                                                    </td>
+                                                </tr>
+                                                <tr align="center">
+                                                    <td class="col">Kode Barang</td>
+                                                    <td class="col">Nama Barang</td>
+                                                    <td class="col">Ukuran</td>
+                                                    <td class="col">QTY</td>
+                                                    <td class="col">Subtotal</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($pembelian as $pb)
+                                                @if($pb->no_po == $pro->nopo)
+                                                <tr class="text-center">
+                                                    <td>{{$pb->kode_barang}}</td>
+                                                    <td>{{$pb->nama_barang}}</td>
+                                                    <td>{{$pb->ukuran}}</td>
+                                                    <td>{{$pb->qty}}</td>
+                                                    <td>Rp. {{number_format($pb->subtotal)}}</td>
+                                                </tr>
+                                                @endif
+                                                @endforeach
+                                                <tr class="table-info">
+                                                    <td colspan="3"><b> Grandtotal</b></td>
+                                                    <td colspan="2" class="text-center"><b>Rp
+                                                            {{number_format($pro->grandtotal)}}</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     @endif
                                     @endforeach
-                                    @endforeach
                                 </div>
+                            </div>
                         </div>
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -295,7 +393,63 @@ use Carbon\Carbon;
                             <div id="terpending_terima" class="accordion-collapse collapse"
                                 data-bs-parent="#terpending">
                                 <div class="accordion-body">
-                                    penerimaan barang.
+                                    @foreach($receive as $rc)
+                                    <?php
+                                    $tgl = Carbon::parse($rc->updated_at);
+                                    $tglrc = $tgl->format('Y-m-d');
+                                        $update = Carbon::parse($rc->updated_at);
+                                        $curr = Carbon::now();
+                                        $sel = $update->diff($curr);
+                                        $seljam = $sel->format('%H jam');
+                                        $selmnt = $sel->format('%i menit');
+                                    ?>
+                                    @if($tglrc !== $tglHariIni)
+                                    <div style="border:2px solid black; padding:2px; margin-bottom:10px;">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3">Nomor PO : <b>{{$rc->nopo}}</b></td>
+                                                    <td colspan="2" class="text-end">
+                                                        <div class="dropdown">
+                                                            <a href="{{route('penerima.terima',$rc->nopo) }}"
+                                                                class="btn btn-warning">Terima Barang </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        Di bayarkan sejak : <b style="font-size:1.1em;">
+                                                            @if($seljam > 1)
+                                                            {{$seljam}} , {{$selmnt}}
+                                                            @else
+                                                            {{$selmnt}}
+                                                            @endif
+                                                        </b> yang lalu
+                                                    </td>
+                                                </tr>
+                                                <tr align="center">
+                                                    <td class="col">Kode</td>
+                                                    <td class="col" colspan="2">Nama Vendor</td>
+                                                    <td class="col" colspan="2">Grandtotal</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($vendors as $vnd)
+                                                @if($vnd->nopo == $rc->nopo)
+                                                <tr class="text-center">
+                                                    <td>{{$vnd->kode_vendor}}</td>
+                                                    <td colspan="2">{{$vnd->nama_vendor}}</td>
+                                                    <td colspan="2">Rp. {{number_format($vnd->grandtotal)}}</td>
+
+                                                </tr>
+
+                                                @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -309,23 +463,293 @@ use Carbon\Carbon;
                             </h2>
                             <div id="terpending_jual" class="accordion-collapse collapse" data-bs-parent="#terpending">
                                 <div class="accordion-body">
-                                    penjualan barang
+                                    @foreach($sell as $sl)
+                                    <?php
+                                    $createdDate = Carbon::parse($sl->created_at);
+                                    $tanggal = $createdDate->format('Y-m-d');
+                                    ?>
+                                    @if($tanggal !== $tglHariIni)
+                                    <div style="border:2px solid black; padding:2px; margin-bottom:10px;">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3">Nomor PO : <b>{{$sl->invoice}}</b></td>
+                                                    <td colspan="2" class="text-end">
+                                                        <form method="get"
+                                                            action="{{ route('task.barang_keluar',['Approved',$sl->invoice])}}">
+                                                            @csrf
+                                                            <div class="dropdown">
+                                                                <button
+                                                                    class="btn btn-warning text-dark dropdown-toggle"
+                                                                    type="button" data-bs-toggle="dropdown"
+                                                                    aria-expanded="false">
+                                                                    PENDING
+                                                                </button>
+
+                                                                <ul class="dropdown-menu">
+                                                                    <li>
+                                                                        @foreach( $kobar as $kb)
+                                                                        @if($sl->invoice == $kb->invoice)
+
+                                                                        @php
+                                                                        $hasil = $kb->kuantitas - $kb->qty;
+                                                                        @endphp
+                                                                        <input type="hidden" name="kobar[]"
+                                                                            value="{{$kb->kode_barang}}">
+                                                                        <input type="hidden" name="qty[]"
+                                                                            value="{{ $hasil }}">
+                                                                        @endif
+
+                                                                        @endforeach
+                                                                        <button class="dropdown-item" type="submit">
+                                                                            Approved</button>
+                                                                    </li>
+                                                                    <li><a class="dropdown-item"
+                                                                            href="{{ route('task.barang_keluar', ['Rejected',$sl->invoice])}}">Rejected</a>
+                                                                    </li>
+                                                                </ul>
+
+                                                            </div>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+
+                                                        <?php
+                                                                $uploadedDate = Carbon::parse($sl->created_at);
+                                                                $currentDate = Carbon::now();
+                                                                $selisihh = $uploadedDate->diff($currentDate);
+                                                                $selisihWaktunya = $selisihh->format('%d Hari,%H Jam');
+                                                            ?>
+                                                        Dibuat sejak :<b style="font-size:1.1em">
+                                                            {{$selisihWaktunya}}</b> yang lalu
+                                                    </td>
+                                                </tr>
+                                                <tr align="center">
+                                                    <td class="col">Kode Barang</td>
+                                                    <td class="col">Nama Barang</td>
+                                                    <td class="col">Ukuran</td>
+                                                    <td class="col">QTY</td>
+                                                    <td class="col">Subtotal</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($penjualan as $pj)
+                                                @if($pj->invoice == $sl->invoice)
+                                                <tr>
+                                                    <td>{{$pj->kode_barang}}</td>
+                                                    <td>{{$pj->nama_barang}}</td>
+                                                    <td>{{$pj->ukuran}}</td>
+                                                    <td>{{$pj->qty}}</td>
+                                                    <td>Rp. {{number_format($pj->subtotal)}}</td>
+                                                </tr>
+                                                @endif
+
+                                                @endforeach
+                                                <tr class="table-info">
+                                                    <td colspan="3"><b> Grandtotal</b></td>
+                                                    <td colspan="2" class="text-center"><b>Rp
+                                                            {{number_format($sl->grandtotal)}}</b></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @endif
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @elseif(auth()->user()->level == 3 )
+                <!-- pengajuan hari ini -->
+                <div style="width:50%; overflow:auto;">
+                    <h4>Pengajuan Hari ini</h4>
+                    <?php $tglHariIni = date('Y-m-d');?>
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo"aria-expanded="true"  aria-controls="collapseTwo">
+                                    Penerimaan Barang
+                                </button>
+                            </h2>
+                            <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    @foreach($receive as $rc)
+                                    <?php
+                                        $tgl = Carbon::parse($rc->updated_at);
+                                        $tglrc = $tgl->format('Y-m-d');
+                                            $update = Carbon::parse($rc->updated_at);
+                                            $curr = Carbon::now();
+                                            $sel = $update->diff($curr);
+                                            $seljam = $sel->format('%H jam');
+                                            $selmnt = $sel->format('%i menit');
+                                        ?>
+                                    @if($tglrc == $tglHariIni)
+                                    <div style="border:2px solid black; padding:2px; margin-bottom:10px;">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3">Nomor PO : <b>{{$rc->nopo}}</b></td>
+                                                    <td colspan="2" class="text-end">
+                                                        <div class="dropdown">
+                                                            <a href="{{route('penerima.terima',$rc->nopo) }}"
+                                                                class="btn btn-warning">Terima Barang </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        Di bayarkan sejak : <b style="font-size:1.1em;">
+                                                            @if($seljam > 1)
+                                                            {{$seljam}} , {{$selmnt}}
+                                                            @else
+                                                            {{$selmnt}}
+                                                            @endif
+                                                        </b> yang lalu
+                                                    </td>
+                                                </tr>
+                                                <tr align="center">
+                                                    <td class="col">Kode</td>
+                                                    <td class="col" colspan="2">Nama Vendor</td>
+                                                    <td class="col" colspan="2">Grandtotal</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($vendors as $vnd)
+                                                @if($vnd->nopo == $rc->nopo)
+                                                <tr class="text-center">
+                                                    <td>{{$vnd->kode_vendor}}</td>
+                                                    <td colspan="2">{{$vnd->nama_vendor}}</td>
+                                                    <td colspan="2">Rp. {{number_format($vnd->grandtotal)}}</td>
+
+                                                </tr>
+
+                                                @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- pengajuan terpending -->
+                <div style="width:50%; height:100%; overflow:auto;">
+                    <h4>Pengajuan Terpending</h4>
+                    <div class="accordion" id="terpending">
+                    <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#terpending_terima" aria-expanded="true"
+                                    aria-controls="terpending_terima">
+                                    Penerimaan Barang
+                                </button>
+                            </h2>
+                            <div id="terpending_terima" class="accordion-collapse collapse show"
+                                data-bs-parent="#terpending">
+                                <div class="accordion-body">
+                                    @foreach($receive as $rc)
+                                    <?php
+                                    $tgl = Carbon::parse($rc->updated_at);
+                                    $tglrc = $tgl->format('Y-m-d');
+                                        $update = Carbon::parse($rc->updated_at);
+                                        $curr = Carbon::now();
+                                        $sel = $update->diff($curr);
+                                        $seljam = $sel->format('%H jam');
+                                        $selmnt = $sel->format('%i menit');
+                                    ?>
+                                    @if($tglrc !== $tglHariIni)
+                                    <div style="border:2px solid black; padding:2px; margin-bottom:10px;">
+                                        <table class="table table-borderless">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="3">Nomor PO : <b>{{$rc->nopo}}</b></td>
+                                                    <td colspan="2" class="text-end">
+                                                        <div class="dropdown">
+                                                            <a href="{{route('penerima.terima',$rc->nopo) }}"
+                                                                class="btn btn-warning">Terima Barang </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="5">
+                                                        Di bayarkan sejak : <b style="font-size:1.1em;">
+                                                            @if($seljam > 1)
+                                                            {{$seljam}} , {{$selmnt}}
+                                                            @else
+                                                            {{$selmnt}}
+                                                            @endif
+                                                        </b> yang lalu
+                                                    </td>
+                                                </tr>
+                                                <tr align="center">
+                                                    <td class="col">Kode</td>
+                                                    <td class="col" colspan="2">Nama Vendor</td>
+                                                    <td class="col" colspan="2">Grandtotal</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($vendors as $vnd)
+                                                @if($vnd->nopo == $rc->nopo)
+                                                <tr class="text-center">
+                                                    <td>{{$vnd->kode_vendor}}</td>
+                                                    <td colspan="2">{{$vnd->nama_vendor}}</td>
+                                                    <td colspan="2">Rp. {{number_format($vnd->grandtotal)}}</td>
+
+                                                </tr>
+
+                                                @endif
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @endif
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
 
     </div>
 </div>
 
+<!-- modal -->
+<form action="{{route('task.barang') }}" method="post" enctype="multipart/form-data">
+    @csrf
+    <div class="modal fade" id="upload" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Bukti Transfer</h1>
+                    <input type="hidden" name="id" id="idnya">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="file" name="gambar" accept="image/*" id="" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <input type="text" name="nopo" id="nomorpo">
+                    <button type="submit" class="btn btn-primary">Approved pengajuan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
 <script>
-$(document).ready(function() {
-    $(".nav-tabs a").click(function() {
-        $(this).tab('show');
-    });
-});
+function modal(nopo) {
+    $('#nomorpo').val(nopo);
+}
 </script>
+
 @endsection

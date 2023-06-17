@@ -200,6 +200,52 @@
                             </ul>
                         </div>
                     </div>
+                @elseif(auth()->user()->level == 3 )
+                    <div class="col-md-3">
+                        <div class="dropdown">
+                            <a class="text-dark text-decoration-none position-relative" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-bell-fill fs-5"></i>
+                                @php
+                                $taskTodo = session('task_todo');
+                                $taskPembelian= session('task_beli');
+                                $taskTerima= session('task_terima');
+                                $taskPenjualan= session('task_jual');
+                                @endphp
+                                @if( @$taskTodo > 0)
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    @if($taskTerima>98)
+                                    +99
+                                    @else
+                                    {{$taskTerima}}
+                                    @endif
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                                @endif
+                            </a>
+                            <ul class="dropdown-menu" style="min-width:13rem; padding:0;">
+                                
+                                <li class="d-flex flex-row justify-content-between"
+                                    style="border-bottom:2px solid #aeaeb0; padding:0px 0.5rem; margin:1rem 0px;">
+                                    <p>Terima Barang</p>
+                                    @if($taskTerima > 0)
+                                    <p class="badge rounded-pill text-bg-danger">{{$taskTerima}}</p>
+                                    @else
+                                    <p class="badge rounded-pill text-bg-success">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                            fill="currentColor" class="bi bi-check-all" viewBox="0 0 16 16">
+                                            <path
+                                                d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z" />
+                                        </svg>
+                                    </p>
+                                    @endif
+                                </li>
+                                <li class="p-2 text-center task__detail"><a href="{{url('/task_todo')}}"
+                                        class="text-decoration-none text-light">Lihat selengkapnya</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     @endif
                     <div class="col-md-3">
                         <div class="dropdown">

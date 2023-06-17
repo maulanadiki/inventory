@@ -396,7 +396,8 @@
                     <div class="col-md-4 mt-2">
                     <select class="form-select" aria-label="Default select example" name="jabatan" require>
                             <option value="" selected>- Jabatan -</option>
-                            <option value="2">Finance</option>
+                            <option value="1">Owner</option>
+                            <!-- <option value="2">Finance</option> -->
                             <option value="3">Purchasing</option>
                             <option value="4">Sales Marketing</option>
                         </select>

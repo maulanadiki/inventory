@@ -171,6 +171,8 @@ class PembelianController extends Controller
         return redirect()->route('pembelian');
     }
 
+    
+
     public function detailbeli(request $request)
     {
         if($request->ajax())

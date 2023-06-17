@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Defashoes;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\taskController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\KaryawanControlle;
@@ -25,8 +26,11 @@ Route::get('/', [Defashoes::class, 'login'])->name('login');
 Route::post('/authenticate', [Defashoes::class, 'authenticate'])->name('authenticate');
 Route::get('/home', [Defashoes::class, 'index'])->name('home');
 Route::get('/logout', [Defashoes::class, 'logout'])->name('logout');
-Route::get('/task_todo', [Defashoes::class, 'task_todo'])->name('task_todo');
 
+Route::get('/task_todo', [taskController::class, 'index'])->name('task_todo');
+Route::post('/task/pembelian/bayar',[taskController::class,'update_status_pembayaran'])->name('task.barang');
+Route::get('task/status/{id}/{status}',[taskController::class,'update_status_pengajuan'])->name('task_status');
+Route::get('task/barang_keluar/{status}/{id}',[taskController::class,'task_keluar'])->name('task.barang_keluar');
 
 // pembelian
 Route::get('/pembelian',[PembelianController::class,'index'])->name('pembelian');

@@ -136,7 +136,7 @@ class PenjualanController extends Controller
         $sell->stat_keluar="Pending";
         $sell->stat_sell="Pending";
         $sell->bukti_resi="Pending";
-        $sell->created_at=date('Y-m-d');
+        // $sell->created_at=date('Y-m-d');
         $sell->save();
         alert()->success('Success','Data Penjualan berhasil di input');
         return redirect('/penjualan');
