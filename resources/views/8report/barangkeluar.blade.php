@@ -75,10 +75,10 @@
         </div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#home">Detail</a>
+                <a class="nav-link active" data-toggle="tab" href="#home"  style="color:#2f2f2f !important;">Detail</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#menu1">Bukti Penjualan</a>
+                <a class="nav-link" data-toggle="tab" href="#menu1"  style="color:#2f2f2f !important;">Bukti Penjualan</a>
             </li>
         </ul>
         <div class="tab-content">

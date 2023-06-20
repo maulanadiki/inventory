@@ -29,7 +29,7 @@
                 </h6>
             </div>
             <div class="col-md-8 overflow-auto">
-                <div class="container-items">
+                <div class="container-items p-2">
                     <div class="items-information">
                         <div class="items-title">Permintaan Pembelian</div>
                         <div class="items-icon">
@@ -49,7 +49,7 @@
                             <img src="{{asset('sendiri/box_datang.png') }}" width="70px" class="img-fluid mt-2" alt="">
 
                             <p>Tugas Pending</p>
-                            <h2>{{$terima_barang}}</h2>
+                            <h2>{{$penerima}}</h2>
                         </div>
                     </div>
                     <div class="items-information">

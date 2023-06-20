@@ -109,7 +109,8 @@
                 <i class="bi bi-person-circle"></i> &nbsp; {{auth()->user()->name}}
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{url('/logout') }}">Logout</a></li>
+                    <li><a class="dropdown-item" href="{{url('/logout') }}"><i class="bi bi-box-arrow-left"></i> Logout</a></li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear-fill"></i> Ganti Password</a></li>
                 </ul>
             </div>
             

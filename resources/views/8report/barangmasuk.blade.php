@@ -59,10 +59,10 @@
       <div class="modal-body">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#home">Detail Pembelian</a>
+                <a class="nav-link active" data-toggle="tab" href="#home" style="color:#2f2f2f !important;">Detail Pembelian</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#menu2">Bukti Bayar</a>
+            <li class="nav-item" >
+                <a class="nav-link" data-toggle="tab" href="#menu2" style="color:#2f2f2f !important;">Bukti Bayar</a>
             </li>
             
         </ul>

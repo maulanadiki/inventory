@@ -148,6 +148,8 @@
                                     @endif
                                     <span class="visually-hidden">unread messages</span>
                                 </span>
+                                @else
+                                
                                 @endif
                             </a>
                             <ul class="dropdown-menu" style="min-width:13rem; padding:0;">
@@ -222,6 +224,7 @@
                                     @endif
                                     <span class="visually-hidden">unread messages</span>
                                 </span>
+                                @else
                                 @endif
                             </a>
                             <ul class="dropdown-menu" style="min-width:13rem; padding:0;">
@@ -254,7 +257,8 @@
                                 <i class="bi bi-person-circle"></i> &nbsp; {{auth()->user()->name}}
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{url('/logout') }}">Logout</a></li>
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changePassword"><i class="bi bi-gear-fill"></i>&nbsp; &nbsp;Ganti Password</a></li>
+                                <li><a class="dropdown-item" href="{{url('/logout') }}"><i class="bi bi-box-arrow-left"></i> &nbsp; Logout</a></li>
                             </ul>
                         </div>
                     </div>
@@ -268,6 +272,49 @@
         </div>
     </div>
 
+
+<!-- modalnya -->
+<div class="modal fade" id="changePassword" tabindex="-1" aria-labelledby="changePassword" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form action="{{route('changepw') }}" method="post">
+        @csrf
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Password Baru</label>
+                <input type="password" class="form-control" id="password" required name="password">
+                <input type="hidden" name="email" value="{{auth() ->user()->email}}" >
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="showpw" onclick="tampilpassword()">
+                <label class="form-check-label" for="flexCheckDefault">
+                   Tampilkan password
+                </label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-save" viewBox="0 0 16 16">
+            <path d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z"></path>
+            </svg>    
+            Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function tampilpassword (){
+    const showpw = document.getElementById("showpw");
+    const pw = document.getElementById("password");
+
+    if(showpw.checked){
+        pw.type="text";
+    }else{
+        pw.type="password";
+    }}
+</script>
 
 
 

@@ -21,6 +21,7 @@ class UserLogin extends Seeder
             'name' => 'Diki Maulana',
             'email' => 'maulanadiki23@gmail.com',
             'password' => Hash::make('123'),
+            'level'=>'1'
         ]);
     }
 }

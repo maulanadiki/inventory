@@ -427,16 +427,7 @@
                 tampilCart();
                 
             });
-            // $(".show-cart").on("click", ".plus-item", function (event) {
-            //   var kode = $(this).data("kode");
-            //   keranjang.TambahItemToCart(kode);
-            //   tampilCart();
-            // });
-
             
-
-
-
             $("#tambah_item").on("click", ".hapus", function (event) {
               var kode = $(this).data("kode");
               keranjang.removeItemFromCartAll(kode);

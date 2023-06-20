@@ -18,6 +18,8 @@ use App\Models\selldetail;
 use App\Models\barang;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
+
 
 class Defashoes extends Controller
 {
@@ -181,7 +183,7 @@ class Defashoes extends Controller
         $terima_barang = procurment::leftJoin('detailprocurment','detailprocurment.no_po','=','procurment.nopo')->leftJoin('pr','pr.nopo','=','procurment.nopo')->where('bukti_bayar','!=','Pending')->where('bukti','=','None')->count();
         $employe = DB::table('employe')->count();
 
-        $penerima = DB::table('pr')->count('nopo');
+        $penerima = DB::table('pr')->where('statpay','=','Done')->where('statpr','=','pending')->count('nopo');
         $sell =DB::table('sell')->count('invoice');
         // dd($pembelianp);
        $vendor = DB::table('vendor')->count('kode_vendor');
@@ -192,15 +194,15 @@ class Defashoes extends Controller
        $beli = DB::table('procurment')->orderBy('created_at','desc')->paginate(10);
        $terima =DB::table('pr')->orderBy('created_at','desc')->paginate(10);
        $jual = DB::table('sell')->orderBy('created_at','desc')->paginate(10);
-       $setTask_todo = $pembelian + $terima_barang + $penjualan;
+       $setTask_todo = $pembelian + $penerima + $penjualan;
         $task_todo = session()->put('task_todo',$setTask_todo);
         $task_pembelian = session()->put('task_beli',$pembelian);
         $task_penjualan=session()->put('task_jual',$penjualan);
-        $task_terima=session()->put('task_terima',$terima_barang);
-        // dd($pembelian);
+        $task_terima=session()->put('task_terima',$penerima);
+        // dd($penerima);
 
        
-        return view ('1dashboard.content',compact('selisih_barang','employe','terima_barang','penjualan','minta','rata_rata','barangss','brgs','EOQ','brg_kel','keluar','data_beli','data_jual','data_label','pembelian','penerima','sell','vendor','barang','user','kuantitas'),['beli'=>$beli, 'terima'=>$terima,'jual'=>$jual] );
+        return view ('1dashboard.content',compact('penerima','selisih_barang','employe','terima_barang','penjualan','minta','rata_rata','barangss','brgs','EOQ','brg_kel','keluar','data_beli','data_jual','data_label','pembelian','penerima','sell','vendor','barang','user','kuantitas'),['beli'=>$beli, 'terima'=>$terima,'jual'=>$jual] );
        
     }
 
@@ -238,7 +240,15 @@ class Defashoes extends Controller
         return redirect('/');
     }
 
-    
+    public function changepw(request $request){
+        // dd($request->all());
+        $saat = Carbon::now();
+        $password = Hash::make($request->password);
+        // dd($password);
+        $data = User::where('email','=',$request->email)->update(['password'=>$password,'updated_at'=>$saat]);
+        alert()->success('Success','Password berhasil di update');
+        return back()->with('success','Password berhasil di ubah');
+    }
 
     /**
      * Show the form for creating a new resource.

@@ -26,6 +26,7 @@ Route::get('/', [Defashoes::class, 'login'])->name('login');
 Route::post('/authenticate', [Defashoes::class, 'authenticate'])->name('authenticate');
 Route::get('/home', [Defashoes::class, 'index'])->name('home');
 Route::get('/logout', [Defashoes::class, 'logout'])->name('logout');
+Route::post('/changepw', [Defashoes::class, 'changepw'])->name('changepw');
 
 Route::get('/task_todo', [taskController::class, 'index'])->name('task_todo');
 Route::post('/task/pembelian/bayar',[taskController::class,'update_status_pembayaran'])->name('task.barang');

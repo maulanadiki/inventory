@@ -39,6 +39,10 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.table-primar{
+    background-color:#219ebc !important;
+}
 </style>
 
 <div class="container-fluid">
@@ -97,7 +101,7 @@
                 <div class="col-md-12 mt-2">
                     <div style="height:370px; overflow:auto;">
                         <table class="table table-hover text-light show-cart" id="table_form">
-                            <thead class="table-primary">
+                            <thead class="table-primar">
                                 <tr class='text-center'>
                                     <th class="col text-center">#</th>
                                     <th class="col">Kode Barang</th>
@@ -116,18 +120,18 @@
                     </div>
                 </div>
 
-                <section id="uploader" class="mt-4  bg-light">
-                    <div class="row mt-2 mb-2 justify-content-end">
-                        <div class="col-md-3 fw-bold text-end mt-2">Bukti Pembelian</div>
+                <section id="uploader" class="table-primar" >
+                    <div class="row justify-content-end p-1">
+                        <div class="col-md-3 fw-bold text-end text-light pt-2">Bukti Pembelian</div>
                         <div class="col-md-7"><input class="form-control" type="file" name="bukti" id="formFile"
                                 accept="image/png, image/gif, image/jpeg" required></div>
                     </div>
                 </section>
 
                 <div class="col-md-12 border-top">
-                    <div class="row justify-content-start mt-3 mb-3">
-                        <div class="col-md-2 d-flex justify-content-start mb-3">
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#item">
+                    <div class="row justify-content-start mt-3">
+                        <div class="col-md-4 d-flex justify-content-start">
+                            <button type="button" class="btn btn-primary" style="font-size:14px;" data-bs-toggle="modal" data-bs-target="#item">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-plus-circle" viewBox="0 0 16 16">
                                     <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
@@ -138,7 +142,7 @@
                             </button>
                         </div>
 
-                        <div class="col-md-10 d-flex justify-content-end mb-3">
+                        <div class="col-md-8 d-flex justify-content-end mb-3">
                             <button type="submit" class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                     class="bi bi-save" viewBox="0 0 16 16">

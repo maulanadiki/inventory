@@ -2,6 +2,9 @@
 
 @extends('layout.layout')
 @section('konten')
+<?php 
+use Carbon\Carbon; 
+?>
 <div class="container-fluid">
     <div class="frame base-system">
         <div class="col-md-12">
@@ -29,11 +32,43 @@
                 </thead>
                 <tbody>
                     @foreach($group as $hsl)
+                    <?php
+                            $a = Carbon::parse($hsl->created_at);
+                            $tgl = $a->format('d-M-Y');
+                            $hari = $a->format('D');
+
+                            switch($hari){
+                                case "Mon":
+                                    $hari =  "Senin";
+                                    break;
+                                case "Tue":
+                                    $hari =  "Selasa";
+                                    break;
+                                case "Wed":
+                                    $hari =  "Rabu";
+                                    break;
+                                case "Thu":
+                                    $hari =  "Kamis";
+                                    break;
+                                case "Fri":
+                                    $hari =  "Jum'at";
+                                    break;
+                                case "Sat":
+                                    $hari =  "Sabtu";
+                                    break;
+                                case "Sun":
+                                    $hari =  "Minggu";
+                                    break;
+                                default:
+                                $hari =  "error hari";
+                            }
+                        ?>
+
                     <form method="post" action="{{route('penerima',$hsl->nopo)}}">
                         @csrf
                         <tr align="center" id="cariprr" onClick="nilai('{{$hsl->bukti}}')">
                             <th style=" text-align:center;">{{$loop -> iteration}}</th>
-                            <td>{{$hsl->created_at}}</td>
+                            <td>{{$tgl}}</td>
                             <td id="po">{{$hsl->nopo}}</td>
                             <td id="vname">{{$hsl->nama_vendor}}</td>
                             <td id="pengajuan">

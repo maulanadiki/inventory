@@ -738,7 +738,7 @@ use Carbon\Carbon;
                     <input type="file" name="gambar" accept="image/*" id="" class="form-control" required>
                 </div>
                 <div class="modal-footer">
-                    <input type="text" name="nopo" id="nomorpo">
+                    <input type="hidden" name="nopo" id="nomorpo">
                     <button type="submit" class="btn btn-primary">Approved pengajuan</button>
                 </div>
             </div>

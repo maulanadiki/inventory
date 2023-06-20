@@ -41,8 +41,11 @@ class ReportController extends Controller
         {
             $data_label[] = $brg->kode_barang;
         }
-        $data_barangmasuk = DB::table('detailprocurment')->get();
-        $data_barangkeluar = DB::table('selldetail')->get();
+        $data_barangmasuk = DB::table('detailprocurment')->leftJoin('procurment','procurment.nopo','=','detailprocurment.no_po')->leftJoin('pr','pr.nopo','detailprocurment.no_po')->where('status_bayar','=','Done')
+        ->where('statpr','=','Recieved')->get();
+        $data_barangkeluar = DB::table('selldetail')->leftJoin('sell','sell.invoice','=','selldetail.invoice')
+        ->where('stat_keluar','=','Approved')->get();
+
         $data_stokbrg = DB::table('stockgood')->get();
         
         $data_beli = procurment::leftJoin('vendor','vendor.kode_vendor','=','procurment.Kode_vendor')->get();
@@ -75,18 +78,18 @@ class ReportController extends Controller
             }
               
            
-                foreach ($data_barangkeluar as $data_klr) 
+            foreach ($data_barangkeluar as $data_klr) 
+            {
+                if($data_klr->kode_barang == $brg->kode_barang)
                 {
                     $nilai2[] = $data_klr->qty;
-                   if($data_klr->kode_barang == $brg->kode_barang)
-                   {
-                    $data_kel[$brg->kode_barang][] = array_sum($nilai);
-                   }
-                   else {
-                    $data_kel[$brg->kode_barang][] = 0;
-                   }
+                $data_kel[$brg->kode_barang][] = array_sum($nilai2);
                 }
-                $data_keluar[] = array_sum($data_kel[$brg->kode_barang]);
+                else {
+                $data_kel[$brg->kode_barang][] = 0;
+                }
+            }
+            $data_keluar[] = array_sum($data_kel[$brg->kode_barang]);
 
                 
             
@@ -105,7 +108,6 @@ class ReportController extends Controller
             }
             $data_stk[] = array_sum($data_stkgd[$brg->kode_barang]);
         }
-        // dd($data_stk);        
         return view('8report.table', compact('data_label','employe','data_masuk','data_keluar','data_stk','data_beli','data_jual') );
     }
 

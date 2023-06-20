@@ -2,6 +2,10 @@
 
 @extends('layout.layout')
 @section('konten')
+<?php 
+use Carbon\Carbon; 
+?>
+
 <div class="container-fluid">
     <div class="frame base-system">
         <div class="row">
@@ -40,11 +44,42 @@
 
                     <tbody>
                         @foreach($csm as $data)
+                        <?php
+                            $a = Carbon::parse($data->created_at);
+                            $tgl = $a->format('d-M-Y');
+                            $hari = $a->format('D');
+
+                            switch($hari){
+                                case "Mon":
+                                    $hari =  "Senin";
+                                    break;
+                                case "Tue":
+                                    $hari =  "Selasa";
+                                    break;
+                                case "Wed":
+                                    $hari =  "Rabu";
+                                    break;
+                                case "Thu":
+                                    $hari =  "Kamis";
+                                    break;
+                                case "Fri":
+                                    $hari =  "Jum'at";
+                                    break;
+                                case "Sat":
+                                    $hari =  "Sabtu";
+                                    break;
+                                case "Sun":
+                                    $hari =  "Minggu";
+                                    break;
+                                default:
+                                $hari =  "error hari";
+                            }
+                        ?>
                         <tr style="cursor: pointer;" align="center" style="cursor: pointer;"
                             onclick="nilai('{{$data->invoice }}','{{$data-> nama_pelanggan}}','{{$data->alamat_pelanggan }}','{{$data-> telp}}','{{$data-> tgl_jual}}','{{$data->market_place }}','{{$data->grandtotal }}','{{$data->email }}','{{$data->bukti_pembelian}}')">
                             <th style=" text-align:center;" data-bs-toggle="modal" data-bs-target="#detailsell">
                                 {{$loop->iteration}}</th>
-                            <td data-bs-toggle="modal" data-bs-target="#detailsell">{{$data->created_at}}</td>
+                            <td data-bs-toggle="modal" data-bs-target="#detailsell"> {{$hari}} , {{$tgl}}</td>
                             <td id="inv" data-bs-toggle="modal" data-bs-target="#detailsell">{{$data->invoice}}</td>
                             <td id="cust" data-bs-toggle="modal" data-bs-target="#detailsell">{{$data->nama_pelanggan}}
                             </td>
