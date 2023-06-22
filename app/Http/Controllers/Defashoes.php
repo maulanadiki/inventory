@@ -88,6 +88,7 @@ class Defashoes extends Controller
             $rata =[];
             $EOQ = [];
             
+            
            
 
             foreach ($keluar as $kel) {

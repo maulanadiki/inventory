@@ -13,9 +13,9 @@
 
 
 
-<div class="container-fluid mt-3 mb-3 d-flex justify-content-center">
+<div class="container-fluid d-flex justify-content-center">
     <div class="col-md-12">
-            <div id="container" class="shadow border border-3 rounded-3"></div>
+            <div id="container" class="shadow border border-3 rounded-3 p-0 m-0"></div>
     </div>
 </div>
 
@@ -26,7 +26,46 @@
   var data_penjualan = {!!json_encode($data_jual)!!};
   var today = new Date();
 var bulan = today.toLocaleString('default', { month: 'long' });
-  console.log(bulan);
+
+switch (bulan){
+    case "January":
+        bulan = "Januari";
+        break;
+    case "February":
+        bulan = "Februari";
+        break;
+    case "March":
+        bulan = "Maret";
+        break;
+    case "April":
+        bulan = "April";
+        break;
+    case "May":
+        bulan = "Mei";
+        break;
+    case "June":
+        bulan = "Juni";
+        break;
+    case "July":
+        bulan = "Juli";
+        break;
+    case "August":
+        bulan = "Agustus";
+        break;
+    case "September":
+        bulan = "September";
+        break;
+    case "October":
+        bulan = "Oktober";
+        break;
+    case "November":
+        bulan = "November";
+        break;
+    case "December":
+        bulan = "Desember";
+        break;
+    
+}
 
 //   dd(data_penjualan);
   if(level == 1 || level == 2)

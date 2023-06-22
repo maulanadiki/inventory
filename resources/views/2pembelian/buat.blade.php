@@ -104,13 +104,13 @@
                                     <table class="table table-hover table-striped show-cart" id="table_form">
                                         <thead class="table-primary">
                                             <tr class="text-center">
-                                            <th class="col text-center">#</th>
-                                            <th class="col" >Kode Barang</th>
-                                            <th class="col" >Nama Barang</th>
-                                            <th class="col" >Ukuran</th>
-                                            <th class="col" >Warna</th>
-                                            <th class="col" >Harga Satuan</th>
-                                            <th class="col" style="width:150px; text-align:center;">Qty</th>
+                                                <th class="col" >Kode Barang</th>
+                                                <th class="col" >Nama Barang</th>
+                                                <th class="col" >Ukuran</th>
+                                                <th class="col" >Warna</th>
+                                                <th class="col" >Harga Satuan</th>
+                                                <th class="col" style="width:150px; text-align:center;">Qty</th>
+                                                <th class="col text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="tambah_item">
@@ -159,7 +159,7 @@
                         <table class="table table-hover table-striped show-cart" id="table_modal" style="width:100%">
                             <thead class="table-primary text-center">
                                 <tr>
-                                    <th class="col">#</th>
+                                    <th class="col text-center" colspan="2">#</th>
                                     <th class="col" >Kode Barang</th>
                                     <th class="col" >Nama Barang</th>
                                     <th class="col" >Ukuran</th>
@@ -168,15 +168,9 @@
                             </thead>
                             <tbody id="tambah_item">
                             @foreach($barang as $br)
-                            <!-- <tr onclick="value_check('{{$br->kode_barang}}','{{$br->nama_barang}}','{{$br->ukuran}}','{{$br->warna}}','{{$br->beli}}','{{$br->deskripsi}}' )" class="add-to-cart" > -->
-                                <!-- <td>
-                                    
-                                    <div class="form-check">
-                                        <input class="form-check-input checkbox" type="checkbox" value="{{$br->kode_barang}}"  id="flexCheckDefault" name="barang[]">
-                                    </div>
-                                </td> -->
                             <tr class="add-to-cart" style="cursor:pointer;" data-id="{{$br->id}}" data-kode="{{$br->kode_barang}}" data-nama="{{$br->nama_barang}}" data-ukuran="{{$br->ukuran}}" data-warna="{{$br->warna}}" data-beli="{{$br->beli}}" data-deskripsi="{{$br->deskripsi}}" >    
-                            <td>{{$loop->iteration}} </td>
+                                <td><input class="form-check-input" type="checkbox" id="flexCheckDefault"></td>
+                                <td>{{$loop->iteration}} </td>
                                 <td>{{$br->kode_barang}}</td>
                                 <td>{{$br->nama_barang}}</td>
                                 <td>{{$br->ukuran}}</td>
@@ -360,15 +354,24 @@
 
     $(".add-to-cart").click(function(event){
         event.preventDefault();
+        var checkbox = this.querySelector("input[type='checkbox']");
+        checkbox.checked = !checkbox.checked;
         var id = $(this).data("id");
-        var kode = $(this).data("kode");
-        var nama = $(this).data("nama");
-        var ukuran = $(this).data("ukuran");
-        var warna = $(this).data("warna");
-        var beli = $(this).data("beli");
-        var deskripsi = $(this).data("deskripsi");
-    keranjang.TambahItemToCart(id,kode,nama,ukuran,warna,beli,deskripsi,1);
-    tampilCart();
+            var kode = $(this).data("kode");
+            var nama = $(this).data("nama");
+            var ukuran = $(this).data("ukuran");
+            var warna = $(this).data("warna");
+            var beli = $(this).data("beli");
+            var deskripsi = $(this).data("deskripsi");
+
+        if(checkbox.checked){
+            keranjang.TambahItemToCart(id,kode,nama,ukuran,warna,beli,deskripsi,1);
+            tampilCart();
+        }
+        else{
+            keranjang.removeItemFromCartAll(kode);
+            tampilCart();
+        }
     });
     // Clear items
     $(".clear-cart").click(function () {
@@ -390,7 +393,6 @@
         for(var i in cartArray)
         {
             konten +="<tr class='text-center'>"+
-                            "<td><button class='btn btn-danger hapus' onclick='hapus(this)'data-kode='"+cartArray[i].kode+"' ><i class='bi bi-trash3'></i> </button> </td>"+
                             "<td>"+cartArray[i].kode+"<input type='hidden' value='"+cartArray[i].kode+"' name='kode[]' required> </td>"+
                             "<td>"+cartArray[i].nama+"</td>"+
                             "<td>"+cartArray[i].ukuran+"</td>"+
@@ -405,7 +407,7 @@
                                 // "<button class='plus-item btn btn-primary input-group-addon' data-kode='"+cartArray[i].kode+"' > + </button>"+
                                 "<a class='tambahkan' data-kode='"+cartArray[i].kode+"' > + </a>"+
                             "</div>"+
-                            
+                            "<td><button class='btn btn-danger hapus' onclick='hapus(this)'data-kode='"+cartArray[i].kode+"' ><i class='bi bi-trash3'></i> </button> </td>"+
                             "</td>"+
                             // "<input type='number' class='item-count form-control' name='qty[]' data-kode='" +cartArray[i].kode +"' value='" +cartArray[i].hitung +"'>" +
                     "</tr>" ;

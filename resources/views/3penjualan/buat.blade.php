@@ -103,7 +103,6 @@
                         <table class="table table-hover text-light show-cart" id="table_form">
                             <thead class="table-primar">
                                 <tr class='text-center'>
-                                    <th class="col text-center">#</th>
                                     <th class="col">Kode Barang</th>
                                     <th class="col">Nama Barang</th>
                                     <th class="col">Ukuran</th>
@@ -111,6 +110,7 @@
                                     <th class="col-">Beli</th>
                                     <th class="col-">Jual</th>
                                     <th class="col" style="width:150px;">Qty</th>
+                                    <th class="col text-center">action</th>
                                 </tr>
                             </thead>
                             <tbody id="tambah_item">
@@ -174,7 +174,7 @@
                 <table class="table table-hover table-striped show-cart" id="table_modal" style="width:100%">
                     <thead class="thead-primary text-center">
                         <tr>
-                            <th>#</th>
+                            <th colspan="2" class="text-center">#</th>
                             <th>Kode Barang</th>
                             <th>Nama Barang</th>
                             <th>Ukuran</th>
@@ -187,6 +187,7 @@
                             data-kode="{{$br->kode_barang}}" data-nama="{{$br->nama_barang}}"
                             data-ukuran="{{$br->ukuran}}" data-warna="{{$br->warna}}" data-beli="{{$br->beli}}"
                             data-deskripsi="{{$br->deskripsi}}" data-kuantitas="{{$br->kuantitas}}">
+                            <td><input class="form-check-input" type="checkbox" id="flexCheckDefault"></td>
                             <td class="col">{{$loop->iteration}} </td>
                             <td class="col">{{$br->kode_barang}}</td>
                             <td class="col">{{$br->nama_barang}}</td>
@@ -347,6 +348,9 @@ var keranjang = (function() {
 
 $(".add-to-cart").click(function(event) {
     event.preventDefault();
+    var checkbox = this.querySelector("input[type='checkbox']");
+    checkbox.checked = !checkbox.checked;
+
     var id = $(this).data("id");
     var kode = $(this).data("kode");
     var nama = $(this).data("nama");
@@ -355,8 +359,15 @@ $(".add-to-cart").click(function(event) {
     var beli = $(this).data("beli");
     var deskripsi = $(this).data("deskripsi");
     var kuantitas = $(this).data("kuantitas");
+    if(checkbox.checked){
     keranjang.TambahItemToCart(id, kode, nama, ukuran, warna, beli, deskripsi, 1, kuantitas);
     tampilCart();
+    }
+    else{
+    keranjang.removeItemFromCartAll(kode);
+    tampilCart();
+    }
+
 });
 // Clear items
 $(".clear-cart").click(function() {
@@ -379,8 +390,7 @@ function tampilCart() {
     for (var i in cartArray) {
 
         konten += "<tr class='text-center'>" +
-            "<td><button class='btn btn-danger hapus' onclick='hapus(this)'data-kode='" + cartArray[i].kode +
-            "' ><i class='bi bi-trash3'></i> </button> </td>" +
+            
             "<td>" + cartArray[i].kode + "<input type='hidden' value='" + cartArray[i].kode + "' name='kode[]'> </td>" +
             "<td>" + cartArray[i].nama + "</td>" +
             "<td>" + cartArray[i].ukuran + "</td>" +
@@ -399,6 +409,8 @@ function tampilCart() {
             "</div>" +
 
             "</td>" +
+            "<td><button class='btn btn-danger hapus' onclick='hapus(this)'data-kode='" + cartArray[i].kode +
+            "' ><i class='bi bi-trash3'></i> </button> </td>" +
             // "<input type='number' class='item-count form-control' name='qty[]' data-kode='" +cartArray[i].kode +"' value='" +cartArray[i].hitung +"'>" +
             "</tr>";
         // document.querySelector('').readOnly = true;

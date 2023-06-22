@@ -109,10 +109,10 @@ use Carbon\Carbon;
                                                 @endif
 
                                                 @endforeach
-                                                <button class="dropdown-item" type="submit"> Approved</button>
+                                                <button class="dropdown-item" type="submit" style="color:#186340;"><i class="bi bi-check-circle"></i> Approved</button>
                                             </li>
                                             <li><a class="dropdown-item"
-                                                    href="{{ route('penjualan.barang_keluar', ['Rejected',$data->invoice])}}">Rejected</a>
+                                                    href="{{ route('penjualan.barang_keluar', ['Rejected',$data->invoice])}}" style="color:#99182c;"><i class="bi bi-x-circle"></i> Rejected</a>
                                             </li>
                                         </ul>
 
