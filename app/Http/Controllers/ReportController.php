@@ -55,6 +55,8 @@ class ReportController extends Controller
 
         foreach($barang as $brg)
         {
+            
+
             foreach($data_barangmasuk as $data_brg)
             {
                 // dd($nilai[] = $brg->kode_barang);
@@ -75,21 +77,38 @@ class ReportController extends Controller
             }
             else {
                 $data_masuk[] = 0; 
-            }
-              
-           
-            foreach ($data_barangkeluar as $data_klr) 
+            } 
+
+
+
+            foreach($data_barangkeluar as $data_klr)
             {
+                $nilai2 = array($data_klr->qty);
+
                 if($data_klr->kode_barang == $brg->kode_barang)
                 {
-                    $nilai2[] = $data_klr->qty;
                 $data_kel[$brg->kode_barang][] = array_sum($nilai2);
                 }
                 else {
                 $data_kel[$brg->kode_barang][] = 0;
                 }
             }
-            $data_keluar[] = array_sum($data_kel[$brg->kode_barang]);
+            if($data_kel != null )
+            {
+                $data_keluar[] = array_sum($data_kel[$brg->kode_barang]); 
+            }
+            else {
+                $data_keluar[] = 0; 
+            } 
+
+
+
+              
+           
+
+            
+
+           
 
                 
             
@@ -108,6 +127,8 @@ class ReportController extends Controller
             }
             $data_stk[] = array_sum($data_stkgd[$brg->kode_barang]);
         }
+
+        // dd($data_stk, $data_keluar, $data_masuk);
         return view('8report.table', compact('data_label','employe','data_masuk','data_keluar','data_stk','data_beli','data_jual') );
     }
 

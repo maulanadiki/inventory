@@ -9,7 +9,7 @@
 <ul class="nav flex-column nav-pills list-group list-group-flush mt-4">
                 <!-- dashboard -->
                 <li class="nav-item kotak">
-                    <a class="nav-link text-light mb-2 {{Request::is('home') ? 'active' : '' }}" style="cursor:pointer;" href="{{url('home') }}" id="dashboard"><i class="fa fa-home" aria-hidden="true"></i>&nbsp; &nbsp;  Dashboard</a>
+                    <a class="nav-link text-light mb-2 {{Request::is('home') ? 'active' : '' }}" style="cursor:pointer;" href="{{url('home') }}" id="dashboard"><i class="bi bi-speedometer2"></i>&nbsp; &nbsp;  Dashboard</a>
                 </li>
                 <!-- Pembelian Barang -->
                 @if(auth()->user()->level == 3 || auth()->user()->level == 1  || auth()->user()->level == 2)

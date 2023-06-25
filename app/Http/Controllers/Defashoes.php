@@ -124,12 +124,12 @@ class Defashoes extends Controller
             foreach ($barangss as $kl) {
                 foreach($minta as $mt){
                     if($kl->kode_barang == $mt->kode_barang){
-                        $selisih = $kl->kuantitas - $mt->kel - $minimal;
+                        $selisih= $kl->kuantitas - $mt->kel - $minimal;
                         if($selisih == null || $selisih == ''){
                             $selisih_barang = 0;
                         }
                         else{
-                            $selisih_barang="error kode";
+                            $selisih_barang= $selisih;
                         }
                     }
                 }
@@ -202,6 +202,9 @@ class Defashoes extends Controller
         $task_terima=session()->put('task_terima',$penerima);
         // dd($penerima);
 
+
+        // menggunakan rumus Economic Order Quantity dikembangkan oleh ford W dan di kembangkan oleh haris
+        
        
         return view ('1dashboard.content',compact('penerima','selisih_barang','employe','terima_barang','penjualan','minta','rata_rata','barangss','brgs','EOQ','brg_kel','keluar','data_beli','data_jual','data_label','pembelian','penerima','sell','vendor','barang','user','kuantitas'),['beli'=>$beli, 'terima'=>$terima,'jual'=>$jual] );
        
