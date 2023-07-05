@@ -34,15 +34,28 @@ class taskController extends Controller
         $penjualan = selling::leftJoin('selldetail','selldetail.invoice','=','sell.invoice')->leftJoin('barang','barang.kode_barang','=','selldetail.kode_barang')->where('stat_keluar','=','Pending')->get();
         $penerimaan = procurment::leftJoin('detailprocurment','detailprocurment.no_po','=','procurment.nopo')->leftJoin('pr','pr.nopo','=','procurment.nopo')->where('bukti_bayar','!=','Pending')->where('bukti','=','None')->get();
         $procurment= procurment::where('status_pengajuan','=','Pending')->get();
-        $receive = pr::where('statpay','=','Done')->where('statpr','=','pending')->get();
+        $receive = procurment::join('pr','pr.nopo','=','procurment.nopo')
+        ->where('statpay','=','Done')->where('statpr','=','pending')->get();
         $sell = selling::where('stat_keluar','=','Pending')->get();
         $kobar = DB::table('selldetail')->leftJoin('sell','selldetail.invoice','=','sell.invoice')->leftJoin('barang','selldetail.kode_barang','=','barang.kode_barang')->leftJoin('stockgood','barang.kode_barang','=','stockgood.kode_barang')->get();
         $vendors = vendor::leftJoin('pr','pr.kode_vendor','=','vendor.kode_vendor')->leftJoin('detailprocurment','detailprocurment.no_po','=','pr.nopo')->
         leftJoin('barang','barang.kode_barang','detailprocurment.kode_barang')->leftJoin('procurment','procurment.nopo','=','pr.nopo')->get();
-        // dd($vendors);
 
+        $beli = detailprocurment::leftJoin('barang','barang.kode_barang','=','detailprocurment.kode_barang')
+        ->leftJoin('procurment','procurment.nopo','=','detailprocurment.no_po')->
+        leftJoin('vendor','vendor.kode_vendor','=','procurment.kode_vendor')->get();
 
-        return view('1dashboard.task_todo',compact('kobar','sell','procurment','pembelian','penerimaan','penjualan','receive','vendors') );
+        $reec = [];
+        foreach ($receive as $rv) {
+            foreach ($beli as $bl) {
+                if ($rv->nopo === $bl->no_po) {
+                    $key = $rv->nopo . '/' . $rv->updated_at . '/' . $rv->grandtotal;
+                    $reec[$key][] = [$bl->no_po, $bl->kode_barang, $bl->nama_barang, $bl->warna, $bl->ukuran, $bl->qty, $bl->subtotal, $rv->created_at];
+                }
+            }
+        }
+        // dd($reec);
+        return view('1dashboard.task_todo',compact('kobar','sell','procurment','pembelian','penerimaan','penjualan','receive','vendors'),['reec'=>$reec] );
     }
 
     /**
@@ -115,13 +128,15 @@ class taskController extends Controller
     public function update_status_pembayaran (request $request)
     {
         // dd($request->all());
+        $curr = Carbon::now();
+        // dd($curr);  
         $foto1 = $request->gambar;
         $bbyar = rand(11111, 99999).'.'.$foto1->getClientOriginalExtension(); //pembuatan nama file
         $request->gambar->storeAs('thumbnail',$bbyar);//memindahkan data ke public
         $foto1->move('images/',$bbyar); //memindahkan gambar ke directory pribadi
         $update = procurment::where('nopo',$request->nopo)->update(['status_pengajuan'=>'Approved','status_bayar'=>'Done','bukti_bayar'=>$bbyar,'updated_at'=>date('Y-m-d h:i:s')]);
-
-        $upr = pr::where('nopo',$request->nopo)->update(['statpay'=>'Done','updated_at'=>date('Y-m-d h:i:s')]);
+        $upr = pr::where('nopo',$request->nopo)->update(['statpay'=>'Done','statpo'=>'Approved','updated_at'=>$curr]);
+        // dd($upr);
         alert()->success('Success','Bukti Pembayaran berhasil di Upload');
         return redirect()->route('task_todo');
     }

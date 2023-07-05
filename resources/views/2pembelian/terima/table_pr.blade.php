@@ -73,40 +73,40 @@ use Carbon\Carbon;
                             <td id="vname">{{$hsl->nama_vendor}}</td>
                             <td id="pengajuan">
                                 @if($hsl->status_pengajuan === "Approved")
-                                <span class="badge text-bg-success text-wrap">{{$hsl->statpo}}<span>
+                                <span class="badge text-bg-success text-wrap"><i class="bi bi-check-circle"></i> {{$hsl->statpo}}<span>
                                         @elseif($hsl->status_pengajuan === "Pending")
-                                        <span class="badge text-bg-warning text-wrap">{{$hsl->statpo}}<span>
+                                        <span class="badge text-bg-warning text-wrap"><i class="bi bi-exclamation-circle"> </i> {{$hsl->statpo}}<span>
                                                 @else
-                                                <span class="badge text-bg-danger text-wrap">{{$hsl->statpo}}<span>
+                                                <span class="badge text-bg-danger text-wrap"><i class="bi bi-x-circle"></i> {{$hsl->statpo}}<span>
                                                         @endif
                             </td>
                             <td>
                                 @if($hsl->status_pengajuan==="Rejected")
-                                <span class="badge text-bg-danger text-wrap">Reject</span>
+                                <span class="badge text-bg-danger text-wrap"><i class="bi bi-x-circle"></i> Rejected</span>
                                 @else
 
                                 @if($hsl->statpay =="Pending")
-                                <span class="badge text-bg-warning text-wrap">{{$hsl->statpay}}</span>
+                                <span class="badge text-bg-warning text-wrap"><i class="bi bi-exclamation-circle"> </i>{{$hsl->statpay}}</span>
                                 @elseif ($hsl->statpay=="Done")
-                                <span class="badge text-bg-success text-wrap">{{$hsl->statpay}}</span>
+                                <span class="badge text-bg-success text-wrap"><i class="bi bi-check-circle"></i> {{$hsl->statpay}}</span>
                                 @else
-                                <span class="badge text-bg-danger text-wrap">{{$hsl->statpay}}</span>
+                                <span class="badge text-bg-danger text-wrap"><i class="bi bi-x-circle"></i> {{$hsl->statpay}}</span>
                                 @endif
 
                                 @endif
                             </td>
                             <td>
                                 @if($hsl->statpo==="Rejected")
-                                <span class="badge text-bg-danger text-wrap">Reject</span>
+                                <span class="badge text-bg-danger text-wrap"><i class="bi bi-x-circle"></i> Rejected</span>
                                 @else
                                 @if($hsl->bukti_bayar =="Pending")
-                                <span class="badge text-bg-warning text-wrap">{{$hsl->statpr}}</span>
+                                <span class="badge text-bg-warning text-wrap"><i class="bi bi-exclamation-circle"> </i> {{$hsl->statpr}}</span>
                                 @else
                                 @if ($hsl->statpr=="pending")
                                 <a href="{{route('penerima.terima',$hsl->nopo) }}"
-                                    class="btn btn-warning">{{$hsl->statpr}}</a>
+                                    class="btn btn-warning text-dark">{{$hsl->statpr}}</a>
                                 @else
-                                <span class="badge text-bg-success text-wrap">{{$hsl->statpr}}</span>
+                                <span class="badge text-bg-success text-wrap"><i class="bi bi-check-circle"></i> {{$hsl->statpr}}</span>
                                 @endif
                                 @endif
                                 @endif
@@ -120,7 +120,14 @@ use Carbon\Carbon;
                                 @else
                                 <button class="btn btn-success" type="button" data-bs-toggle="modal"
                                     data-bs-target="#receipt" onclick="gmbr('{{$hsl->bukti}}')"
-                                    style="cursor: pointer;">Receipt</button>
+                                    style="cursor: pointer;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-card-image" viewBox="0 0 16 16">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                        <path
+                                            d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z" />
+                                    </svg>
+                                    Receipt</button>
                                 @endif
 
                             </td>

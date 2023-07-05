@@ -46,22 +46,22 @@
                                 @if($dt->status_pengajuan == 'Rejected')
                                 <div class="dropdown">
                                     <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="bi bi-x-circle"></i>  Rejected
+                                    <i class="bi bi-x-circle"></i>  Reject
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Approved']  ) }}"><i class="bi bi-check-circle"></i> Approved</a></li>
-                                        <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Pending']  ) }}"><i class="bi bi-exclamation-circle"></i> Pending</a></li>
+                                    <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Approved']  ) }}"style="color:#186340;"><i class="bi bi-check-circle"></i> Approve</a></li>
+                                    <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Pending']  ) }}" style="color:#bb6902;"><i class="bi bi-exclamation-circle"></i> Pending</a></li>
                                     </ul>
                                 </div>  
                                 @elseif($dt->status_pengajuan == 'Approved')
                                     @if($dt->bukti_bayar == 'Pending')
                                     <div class="dropdown">
                                         <button class="btn btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="bi bi-check-circle"></i> Approved
+                                        <i class="bi bi-check-circle"></i> Approve
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Rejected']  ) }}"> <i class="bi bi-x-circle"></i> Rejected</a></li>
-                                            <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Pending']  ) }}"><i class="bi bi-exclamation-circle"></i> Pending</a></li>
+                                            <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Pending']  ) }}"  style="color:#bb6902;"><i class="bi bi-exclamation-circle"></i> Pending</a></li>
+                                            <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Rejected']  ) }}"style="color:#99182c;"> <i class="bi bi-x-circle"></i> Reject</a></li>
                                         </ul>
                                     </div>
                                     @else
@@ -77,8 +77,8 @@
                                     <i class="bi bi-exclamation-circle"></i> Pending
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Rejected']  ) }}"> <i class="bi bi-x-circle"></i> Rejected</a></li>
-                                        <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Approved']  ) }}"><i class="bi bi-check-circle"></i> Approved</a></li>
+                                        <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Approved']  ) }}" style="color:#186340;"><i class="bi bi-check-circle"></i> Approve</a></li>
+                                        <li><a class="dropdown-item" href="{{route('barang.status',[$dt->nopo,'Rejected']  ) }}" style="color:#99182c;"> <i class="bi bi-x-circle"></i> Reject</a></li>
                                     </ul>
                                 </div>  
                                 @endif
@@ -89,10 +89,10 @@
                                     @elseif($dt->status_pengajuan == 'Rejected')
                                         <div class="dropdown">
                                             <button class="btn btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-x-circle"></i> Rejected
+                                            <i class="bi bi-x-circle"></i> Reject
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="{{ route('barang.pembelian.hapus', $dt->nopo ) }}"><i class="bi bi-trash3"></i> &nbsp;Hapus</a></li>
+                                                <li><a class="dropdown-item text-danger" href="{{ route('barang.pembelian.hapus', $dt->nopo ) }}"><i class="bi bi-trash3"></i> &nbsp;Hapus</a></li>
                                             </ul>
                                         </div>
                                     @else
@@ -108,10 +108,12 @@
                                     <i class="bi bi-cloud-upload"></i> Upload File
                                 </button>
                             @elseif($dt->status_bayar == 'Done')
-                            <button disabled="disabled" class="btn btn-success" > <i class="bi bi-check-circle"></i> Done </button>
+                                <button disabled="disabled" class="btn btn-success" > <i class="bi bi-check-circle"></i> Done </button>
                             @else
-                            <button disabled="disabled" class="btn btn-danger"><i class="bi bi-check-circle"></i> Rejected </button>
+                                <button disabled="disabled" class="btn btn-danger"><i class="bi bi-check-circle"></i> Reject </button>
                             @endif
+                        @elseif ($dt->status_pengajuan == 'Rejected')
+                        <button disabled="disabled" class="btn btn-danger"><i class="bi bi-x-circle"></i> Rejected</button>
                         @else
                         <button disabled="disabled" class="btn btn-secondary">Menunggu Approval</button>
                         @endif
@@ -152,7 +154,7 @@
             <input type="file" name="gambar" accept="image/*" id="" class="form-control" required>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o" aria-hidden="true"></i> Simpan</button>
         </div>
         </div>
     </div>

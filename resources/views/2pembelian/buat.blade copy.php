@@ -104,7 +104,6 @@
                                     <table class="table table-hover table-striped show-cart" id="table_form">
                                         <thead class="table-primary">
                                             <tr class="text-center">
-                                                <th class="col" >No</th>
                                                 <th class="col" >Kode Barang</th>
                                                 <th class="col" >Nama Barang</th>
                                                 <th class="col" >Ukuran</th>
@@ -390,11 +389,10 @@
             currency: "IDR"
             }).format(number);
         }
-        var hitung =1;
-        for(var i in cartArray )
+
+        for(var i in cartArray)
         {
             konten +="<tr class='text-center'>"+
-            "<td>"+ hitung++ +"</td>"+
                             "<td>"+cartArray[i].kode+"<input type='hidden' value='"+cartArray[i].kode+"' name='kode[]' required> </td>"+
                             "<td>"+cartArray[i].nama+"</td>"+
                             "<td>"+cartArray[i].ukuran+"</td>"+
@@ -414,7 +412,6 @@
                             // "<input type='number' class='item-count form-control' name='qty[]' data-kode='" +cartArray[i].kode +"' value='" +cartArray[i].hitung +"'>" +
                     "</tr>" ;
         }
-        hitung++;
         $("#tambah_item").html(konten);
     }
             // -1

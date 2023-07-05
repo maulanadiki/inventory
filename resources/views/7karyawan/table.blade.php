@@ -98,36 +98,45 @@
                                         Approved
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item"
-                                                href="{{route('karyawan.update',[$user->id,'Reject'] )}}"><i
-                                                    class="bi bi-x-circle"></i> Reject</a></li>
-                                        <li><a class="dropdown-item"
-                                                href="{{route('karyawan.update',[$user->id,'Pending'] )}}"><i
-                                                    class="bi bi-exclamation-circle"></i> Pending</a></li>
-                                        <li><a class="dropdown-item" href="#"
-                                                onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')"
-                                                data-bs-toggle="modal" data-bs-target="#edit_karyawan"><i
-                                                    class="bi bi-pencil-square"></i> Edit</a></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{route('karyawan.update',[$user->email,'Pending'] )}}"style="color:#bb6902;" >
+                                                <i class="bi bi-exclamation-circle"></i> Pending
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{route('karyawan.update',[$user->email,'Reject'] )}}" style="color:#99182c;">
+                                                <i class="bi bi-x-circle"></i> Reject
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')" data-bs-toggle="modal" data-bs-target="#edit_karyawan">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a></li>
                                     </ul>
                                 </div>
 
                                 @elseif($user->akses == "Reject")
                                 <div class="dropdown">
                                     <button class="btn btn-danger dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        data-bs-toggle="dropdown" aria-expanded="false" >
                                         <i class="bi bi-x-circle"></i> Reject
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item"
-                                                href="{{route('karyawan.update',[$user->id,'Approved'] )}}"><i
-                                                    class="bi bi-check-circle"></i> Approved</a></li>
-                                        <li><a class="dropdown-item"
-                                                href="{{route('karyawan.update',[$user->id,'Pending'] )}}"><i
-                                                    class="bi bi-exclamation-circle"></i> Pending</a></li>
-                                        <li><a class="dropdown-item" href="#"
-                                                onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')"
-                                                data-bs-toggle="modal" data-bs-target="#edit_karyawan"><i
-                                                    class="bi bi-pencil-square"></i> Edit</a></li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{route('karyawan.update',[$user->email,'Approved'] )}}" style="color:#186340;">
+                                                <i class="bi bi-check-circle"></i> Approve
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{route('karyawan.update',[$user->email,'Pending'] )}}" style="color:#bb6902;">
+                                                <i class="bi bi-exclamation-circle"></i> Pending
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#" onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')" data-bs-toggle="modal" data-bs-target="#edit_karyawan">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                                 @else
@@ -138,10 +147,10 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item"
-                                                href="{{route('karyawan.update',[$user->id,'Approved'] )}}"><i
+                                                href="{{route('karyawan.update',[$user->email,'Approved'] )}}" style="color:#186340;"><i
                                                     class="bi bi-check-circle"></i> Approved</a></li>
                                         <li><a class="dropdown-item"
-                                                href="{{route('karyawan.update',[$user->id,'Reject'] )}}"><i
+                                                href="{{route('karyawan.update',[$user->email,'Reject'] )}}" style="color:#99182c;"><i
                                                     class="bi bi-x-circle"></i> Rejected</a></li>
                                         <li><a class="dropdown-item" href="#"
                                                 onclick="edit_karyawan('{{$user->nik}}','{{$user->npwp}}','{{$user->nama}}','{{$user->tempat}}','{{$user->tanggal}}','{{$user->kelamin}}','{{$user->telp}}','{{$user->email}}','{{$user->alamat}}','{{$user->bank}}','{{$user->norek}}','{{$user->f_nik}}','{{$user->f_npwp}}','{{$user->f_tabungan}}','{{$user->akses}}','{{$user->jabatan}}','{{$user->id}}')"

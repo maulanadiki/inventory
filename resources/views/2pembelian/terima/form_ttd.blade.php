@@ -63,7 +63,7 @@
                     <hr>
                     <form method="post" action="{{ route('prrc', $cek->nopo ) }}" enctype="multipart/form-data">
                         @csrf
-                        <table class="table">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">No</th>

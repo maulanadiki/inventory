@@ -23,7 +23,7 @@
         type: 'column'
     },
     title: {
-        text: 'Monthly Average Rainfall'
+        text: 'Laporan Pergerakan barang'
     },
     subtitle: {
         text: 'Source: WorldClimate.com'

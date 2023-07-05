@@ -93,12 +93,10 @@ class KaryawanControlle extends Controller
 
     public function ubah($id,$status)
     {   
-        // dd($id);
-        $data = employe::findorfail($id)->update(['akses'=>$status]);
-        $cari = employe::findorfail($id)->get();
-        // dd($status);
         if($status == 'Approved')
         {
+            $cari = employe::where('email',$id)->get();
+            // dd($cari,$id);
             $nama='';
             $email='';
             $password='';
@@ -118,19 +116,19 @@ class KaryawanControlle extends Controller
             // dd($smpn);
 
             $smpn->save();
+            $data2= employe::where('email',$id)->update(['akses'=>$status]);
         }
         else
         {
             // dd($id);
-            $pcari = employe::where('id',$id)->first();
-            $id_email = '';
-            $data = user::where('email',$pcari->email)->delete();
-
-            
+            $pcari = employe::where('email',$id)->first();
+            if($pcari != null){
+                $data2= employe::where('email',$id)->update(['akses'=>$status]);
+                $data = user::where('email',$pcari->email)->delete();
+            }
         }
-
-        // dd($status);
-        alert()->success('Success','Data Berhasil Di'.$status);
+        
+        alert()->success('Success','Data Berhasil Di Ubah Menjadi '.$status);
         return redirect()->route('karyawan.table');
     }
     public function editing(request $request)

@@ -93,7 +93,7 @@ use Carbon\Carbon;
                                     <div class="dropdown">
                                         <button class="btn btn-warning text-dark dropdown-toggle" type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false">
-                                            PENDING
+                                            <i class="bi bi-exclamation-circle"> </i>  PENDING
                                         </button>
 
                                         <ul class="dropdown-menu">
@@ -109,35 +109,35 @@ use Carbon\Carbon;
                                                 @endif
 
                                                 @endforeach
-                                                <button class="dropdown-item" type="submit"> Approved</button>
+                                                <button class="dropdown-item" type="submit" style="color:#186340;"><i class="bi bi-check-circle"></i> Approved</button>
                                             </li>
                                             <li><a class="dropdown-item"
-                                                    href="{{ route('penjualan.barang_keluar', ['Rejected',$data->invoice])}}">Rejected</a>
+                                                    href="{{ route('penjualan.barang_keluar', ['Rejected',$data->invoice])}}" style="color:#99182c;"><i class="bi bi-x-circle"></i> Rejected</a>
                                             </li>
                                         </ul>
 
                                     </div>
                                 </form>
                                 @elseif($data->stat_keluar == "Approved" )
-                                <button type="button" class="btn btn-success" disabled>{{$data->stat_keluar}}</button>
+                                <button type="button" class="btn btn-success" disabled><i class="bi bi-check-circle"></i> {{$data->stat_keluar}}</button>
 
                                 @else
-                                <button type="button" class="btn btn-danger" disabled>{{$data->stat_keluar}}</button>
+                                <button type="button" class="btn btn-danger" disabled><i class="bi bi-x-circle"></i> {{$data->stat_keluar}}</button>
                                 @endif
                                 @else
                                 @if ( $data->stat_keluar == "Pending" )
                                 <button type="button" class="btn btn-secondary" disabled>Menunggu Persetujuan</button>
                                 @elseif($data->stat_keluar == "Approved")
-                                <button type="button" class="btn btn-success" disabled>{{$data->stat_keluar}}</button>
+                                <button type="button" class="btn btn-success" disabled><i class="bi bi-check-circle"></i> {{$data->stat_keluar}}</button>
                                 @else
                                 <div class="dropdown">
                                     <button class="btn btn-danger dropdown-toggle" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false">
-                                        {{$data->stat_keluar}}
+                                        <i class="bi bi-x-circle"></i> {{$data->stat_keluar}}
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('penjualan.barang_keluar.hapus', $data->invoice ) }}">Hapus</a>
+                                        <li><a class="dropdown-item text-danger"
+                                                href="{{ route('penjualan.barang_keluar.hapus', $data->invoice ) }}"><i class="bi bi-trash3-fill"></i> Hapus</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -150,21 +150,28 @@ use Carbon\Carbon;
                                 @if($data->stat_keluar == "Approved")
                                 @if( $data->stat_sell == "Pending")
                                 <button class="btn btn-warning text-dark" data-bs-toggle="modal"
-                                    data-bs-target="#uploadresi" onclick="upload('{{$data->invoice}}')">Upload
+                                    data-bs-target="#uploadresi" onclick="upload('{{$data->invoice}}')"><i class="bi bi-cloud-arrow-up"></i> Upload
                                     Resi</button>
                                 @elseif ($data->stat_sell == "Approved")
                                 <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#buktiresi"
-                                    onClick="resi('{{$data->bukti_resi }}') ">Cek Resi</a>
+                                    onClick="resi('{{$data->bukti_resi }}') ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-card-image" viewBox="0 0 16 16">
+                                        <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                        <path
+                                            d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zm13 1a.5.5 0 0 1 .5.5v6l-3.775-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12v.54A.505.505 0 0 1 1 12.5v-9a.5.5 0 0 1 .5-.5h13z" />
+                                    </svg>
+                                    Cek Resi</a>
                                 @else
-                                <a class="btn btn-danger" disabled>Rejected</a>
+                                <a class="btn btn-danger" disabled><i class="bi bi-x-circle"></i> Rejected</a>
                                 @endif
 
 
 
                                 @elseif ($data->stat_keluar=="Pending")
-                                <button type="button" class="btn btn-warning" disabled>Waiting</button>
+                                <button type="button" class="btn btn-secondary" disabled>Menunggu Approval</button>
                                 @else
-                                <button type="button" class="btn btn-danger" disabled> Rejected </button>
+                                <button type="button" class="btn btn-danger" disabled><i class="bi bi-x-circle"></i> Rejected </button>
                                 @endif
 
                             </td>
