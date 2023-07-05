@@ -40,8 +40,8 @@
     cursor: pointer;
 }
 
-.table-primar{
-    background-color:#219ebc !important;
+.table-primar {
+    background-color: #219ebc !important;
 }
 </style>
 
@@ -53,109 +53,117 @@
                     <li class="breadcrumb-item"><a href="{{url('home') }}" class="fs-5 ">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="{{url('penjualan') }}" class="fs-5 ">Data Penjualan</a>
                     </li>
-                    <li class="breadcrumb-item active text-light fs-5" aria-current="page">Buat Penjualan</li>
+                    <li class="breadcrumb-item active  text-light fs-5" aria-current="page">Buat Penjualan</li>
                 </ul>
             </nav>
         </div>
 
-        <div class="col-md-12 border-3 p-3">
+        <div class="col-md-12 border-3">
+
             <form action="{{route('penjualan.simpan') }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <div class="row text-light">
-                    <div class="col-md-3" style="padding:9px 14px;">Nomor Invoice</div>
-                    <div class="col-md-3"><input type="text" class="form-control" name="inv" value="{{$notrans}}" placeholder="" readonly></div>
-                    <div class="col-md-3" style="padding:9px 14px;">Tanggal Jual</div>
-                    <div class="col-md-3"><input type="date" class="form-control " name="date"
-                            value="<?php echo date('Y/m/d') ?>" id="tgl" required></div>
-                </div>
-
-                <div class="row mt-2 text-light">
-                    <div class="col-md-3" style="padding:14px 14px;">Nama Customer</div>
-                    <div class="col-md-3 mt-1"><input type="text" class="form-control" name="name"
-                            placeholder="Max Character 20" maxlength="20"
-                            onkeypress="return event.charCode < 48 || event.charCode >57" required></div>
-                    <div class="col-md-3" style="padding:14px 14px;">Marketplace</div>
-                    <div class="col-md-3">
-                        <select name="market" class="form-select form-select-lg" aria-label=".form-select-lg example"
-                            required>
-                            <option value="1">Facebook</option>
-                            <option value="2">Shopee</option>
-                            <option value="3">lazada</option>
-                        </select>
+                <div class="container-fluid border border-3 shadow" style="border-radius:20px; background-color:#E8ECFC; padding:12px;">
+                    <div class="row ">
+                        <div class="col-md-3" style="padding:9px 14px;">Nomor Invoice</div>
+                        <div class="col-md-3"><input type="text" class="form-control" name="inv" value="{{$notrans}}"
+                                placeholder="" readonly></div>
+                        <div class="col-md-3" style="padding:9px 14px;">Tanggal Jual</div>
+                        <div class="col-md-3"><input type="date" class="form-control " name="date"
+                                value="<?php echo date('Y/m/d') ?>" id="tgl" required></div>
                     </div>
-                </div>
-                <div class="row mt-2 text-light">
-                    <div class="col-md-3" style="padding:9px 14px;">Telpon</div>
-                    <div class="col-md-3">
-                        <input type="text" class="form-control " name="telp" placeholder="Max Number 13" maxlength="13"
-                            onkeypress="return event.charCode >= 48 && event.charCode <=57" required>
-                    </div>
-                    <div class="col-md-3" style="padding:9px 14px;">Alamat</div>
-                    <div class="col-md-3">
-                        <textarea class="form-control " placeholder="Leave a comment here" id="floatingTextarea"
-                            name="alamat" required></textarea>
-                    </div>
-                </div>
 
-
-                <div class="col-md-12 mt-2">
-                    <div style="height:370px; overflow:auto;">
-                        <table class="table table-hover text-light show-cart" id="table_form">
-                            <thead class="table-primar">
-                                <tr class='text-center'>
-                                    <th class="col">Kode Barang</th>
-                                    <th class="col">Nama Barang</th>
-                                    <th class="col">Ukuran</th>
-                                    <th class="col">Warna</th>
-                                    <th class="col-">Beli</th>
-                                    <th class="col-">Jual</th>
-                                    <th class="col" style="width:150px;">Qty</th>
-                                    <th class="col text-center">action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tambah_item">
-
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <section id="uploader" class="table-primar" >
-                    <div class="row justify-content-end p-1">
-                        <div class="col-md-3 fw-bold text-end text-light pt-2">Bukti Pembelian</div>
-                        <div class="col-md-7"><input class="form-control" type="file" name="bukti" id="formFile"
-                                accept="image/png, image/gif, image/jpeg" required></div>
-                    </div>
-                </section>
-
-                <div class="col-md-12 border-top">
-                    <div class="row justify-content-start mt-3">
-                        <div class="col-md-4 d-flex justify-content-start">
-                            <button type="button" class="btn btn-primary" style="font-size:14px;" data-bs-toggle="modal" data-bs-target="#item">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-plus-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <path
-                                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                                </svg>
-                                Tambah Item
-                            </button>
+                    <div class="row mt-2 ">
+                        <div class="col-md-3" style="padding:14px 14px;">Nama Customer</div>
+                        <div class="col-md-3 mt-1"><input type="text" class="form-control" name="name"
+                                placeholder="Max Character 20" maxlength="20"
+                                onkeypress="return event.charCode < 48 || event.charCode >57" required></div>
+                        <div class="col-md-3" style="padding:14px 14px;">Marketplace</div>
+                        <div class="col-md-3">
+                            <select name="market" class="form-select form-select-lg"
+                                aria-label=".form-select-lg example" required>
+                                <option value="1">Facebook</option>
+                                <option value="2">Shopee</option>
+                                <option value="3">lazada</option>
+                            </select>
                         </div>
-
-                        <div class="col-md-8 d-flex justify-content-end mb-3">
-                            <button type="submit" class="btn btn-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-save" viewBox="0 0 16 16">
-                                    <path
-                                        d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z" />
-                                </svg>
-                                Simpan
-                            </button>
+                    </div>
+                    <div class="row mt-2 ">
+                        <div class="col-md-3" style="padding:9px 14px;">Telpon</div>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control " name="telp" placeholder="Max Number 13"
+                                maxlength="13" onkeypress="return event.charCode >= 48 && event.charCode <=57" required>
                         </div>
+                        <div class="col-md-3" style="padding:9px 14px;">Alamat</div>
+                        <div class="col-md-3">
+                            <textarea class="form-control " placeholder="Leave a comment here" id="floatingTextarea"
+                                name="alamat" required></textarea>
+                        </div>
+                    </div>
 
+
+                    <div class="col-md-12 mt-2">
+                        <div style="height:370px; overflow:auto;">
+                            <table class="table table-hover show-cart" id="table_form">
+                                <thead style="background-color:#cfe2ff;">
+                                    <tr class='text-center'>
+                                        <th class="col">No</th>
+                                        <th class="col">Kode Barang</th>
+                                        <th class="col">Nama Barang</th>
+                                        <th class="col">Ukuran</th>
+                                        <th class="col">Warna</th>
+                                        <th class="col-">Beli</th>
+                                        <th class="col-">Jual</th>
+                                        <th class="col" style="width:150px;">Qty</th>
+                                        <th class="col text-center">action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tambah_item">
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <section id="uploader" style="background-color:#cfe2ff;">
+                        <div class="row justify-content-end p-1">
+                            <div class="col-md-3 fw-bold text-end  pt-2">Bukti Pembelian</div>
+                            <div class="col-md-7"><input class="form-control" type="file" name="bukti" id="formFile"
+                                    accept="image/png, image/gif, image/jpeg" required></div>
+                        </div>
+                    </section>
+
+                    <div class="col-md-12 border-top">
+                        <div class="row justify-content-start mt-3">
+                            <div class="col-md-4 d-flex justify-content-start">
+                                <button type="button" class="btn btn-primary" style="font-size:14px;"
+                                    data-bs-toggle="modal" data-bs-target="#item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                        <path
+                                            d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                                    </svg>
+                                    Tambah Item
+                                </button>
+                            </div>
+
+                            <div class="col-md-8 d-flex justify-content-end mb-3">
+                                <button type="submit" class="btn btn-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                        class="bi bi-save" viewBox="0 0 16 16">
+                                        <path
+                                            d="M2 1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9.5a1 1 0 0 0-1 1v7.293l2.646-2.647a.5.5 0 0 1 .708.708l-3.5 3.5a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L7.5 9.293V2a2 2 0 0 1 2-2H14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h2.5a.5.5 0 0 1 0 1H2z" />
+                                    </svg>
+                                    Simpan
+                                </button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
 </div>
@@ -359,13 +367,12 @@ $(".add-to-cart").click(function(event) {
     var beli = $(this).data("beli");
     var deskripsi = $(this).data("deskripsi");
     var kuantitas = $(this).data("kuantitas");
-    if(checkbox.checked){
-    keranjang.TambahItemToCart(id, kode, nama, ukuran, warna, beli, deskripsi, 1, kuantitas);
-    tampilCart();
-    }
-    else{
-    keranjang.removeItemFromCartAll(kode);
-    tampilCart();
+    if (checkbox.checked) {
+        keranjang.TambahItemToCart(id, kode, nama, ukuran, warna, beli, deskripsi, 1, kuantitas);
+        tampilCart();
+    } else {
+        keranjang.removeItemFromCartAll(kode);
+        tampilCart();
     }
 
 });
@@ -386,11 +393,11 @@ function tampilCart() {
             currency: "IDR"
         }).format(number);
     }
-
+    var counter =1 ;
     for (var i in cartArray) {
 
         konten += "<tr class='text-center'>" +
-            
+            "<td>"+counter++ +"</td>"+
             "<td>" + cartArray[i].kode + "<input type='hidden' value='" + cartArray[i].kode + "' name='kode[]'> </td>" +
             "<td>" + cartArray[i].nama + "</td>" +
             "<td>" + cartArray[i].ukuran + "</td>" +
