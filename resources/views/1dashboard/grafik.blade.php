@@ -17,20 +17,20 @@
     <div class="col-md-12 mt-3">
         <div class="row ps-3">
             <div class="form-check col-md-2">
-                <input class="form-check-input" type="radio" name="radio" id="bulanan" value="bulan" checked>
+                <input class="form-check-input" type="radio" name="radio" id="bulanan" value="bulan" >
                 <label class="form-check-label" for="flexRadioDefault1">
                 Bulanan
                 </label>
             </div>
             <div class="form-check col-md-8">
-                <input class="form-check-input" type="radio" name="radio" value="tanggal" id="tgl">
+                <input class="form-check-input" type="radio" name="radio" value="tanggal" id="tgl" checked>
                 
                 <label class="form-check-label" for="flexRadioDefault2">
                     <div class="row">
                         <div class="col-md-2">Mulai</div>
-                        <div class="col-md-4"><input type="date" name="start" id="start" class="form-control" value="{{ date('Y-m-d') }}"></div>
+                        <div class="col-md-4"><input type="date" name="start" id="start" class="form-control" value="{{ date('Y-m-01') }}"></div>
                         <div class="col-md-2">Akhir</div>
-                        <div class="col-md-4"><input type="date" name="end" id="end" class="form-control" required disabled></div>
+                        <div class="col-md-4"><input type="date" name="end" id="end" class="form-control" value="{{ date('Y-m-t') }}" required disabled></div>
                     </div>
                 </label>
             </div>
@@ -286,6 +286,7 @@
                 list_tgl =res.list_tgl;
                  data_beli =res.data_beli;
                  data_jual = res.data_jual;
+                 console.log(list_tgl, data_beli, data_jual);
                 continueWithData();
             }
            });
@@ -294,7 +295,18 @@
        }
     //    penjumlahan bulanannya disni
        else{
-        console.log("ini tampilan tahunan");
+        $.ajax({
+            type:"get",
+            url:'{{URL::to('/grafik/cari')}}',
+            data:{radio:type},
+            success: function(res) {
+                list_tgl =res.bulan;
+                data_beli =res.data_beli;
+                 data_jual = res.data_jual;
+                 console.log(list_tgl, data_beli, data_jual);
+                 otherWithData();
+            }
+        });
        }
 
        function continueWithData(){
@@ -302,6 +314,7 @@
             const format = date.split('-');
             return `${format[1]}-${format[2]}`;
         });
+        
 
         Highcharts.chart('container', {
         chart: {
@@ -343,12 +356,66 @@
             name: 'Penjualan',
             data: data_jual
         }]
-    });        
+        });        
+       }
 
+       function otherWithData(){
+        // const labels = list_tgl.map(date=>{
+        //     const format = date.split('-');
+        //     return `${format[1]}`;
+        // });
+        // const label = labels->format('M');
+        const bulanLabels = [
+    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+];
 
+// Anda perlu mengambil angka bulan dari list_tgl dan lakukan konversi ke integer
+const label = bulanLabels.map(namaBulan => namaBulan.substr(0, 9));
 
+console.log(label);
 
-           console.log(label, data_beli);
+        Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Grafik Keluar Masuk Barang '
+        },
+        
+        xAxis: {
+            categories: label,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Data Keluar Masuk Barang (pcs)'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} Pcs</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Pembelian',
+            data: data_beli
+
+        },{
+            name: 'Penjualan',
+            data: data_jual
+        }]
+        });   
        }
     });
 </script>

@@ -30,24 +30,6 @@ class Defashoes extends Controller
      */
     public function index()
     {
-        // $mulai = $request->mulai;
-        // $akhir = $request->akhir;
-        // $penjualan= db::table('sell')->leftJoin('selldetail','selldetail.invoice','=','sell.invoice')->whereBetween('tgl_jual',[$mulai,$akhir])->where('stat_keluar','=','Approved')->get();
-        // foreach($list_tgl as $tgls){
-        //     $total_qty2 =0;
-        //     foreach($penjualan as $jual){
-        //         if($jual->tgl_jual->format('Y-m-d') == $tgls){
-        //             $total_qty2 += (int) $jual->qty;
-        //         }
-        //     }
-        //     $data_penjualan_barang[$tgl] = $total_qty2;
-        //     $data_jual[] = $total_qty2;
-        // }
-       
-
-
-
-
             $bln = date('m');
 
             // dd($bln);
@@ -310,11 +292,40 @@ class Defashoes extends Controller
                 return response()->json(['pembelian'=>$pembelian,'penjualan'=>$penjualan,'list_tgl'=>$list_tgl,'data_beli'=>$data_beli,'data_jual'=>$data_jual]);
             }
             else{
-                $mulai = $request->mulai;
-                $akhir = $request->akhir;
-                $pembelian= procurment::where('status_pengajuan','=','Pending')->get();
-                $penjualan= db::table('sell')->where('stat_keluar','=','Approved')->get();
-                return response()->json(['pembelian'=>$pembelian,'penjualan'=>$penjualan]);
+                $bulan = [];
+                $data_beli =[];
+                $data_pembelian_barang=[];
+                $data_jual = [];
+                $data_penjualan_barang = [];
+
+
+                for($i=1;$i<=12;$i++){
+                    $format = sprintf("%02d", $i);
+                    $bulan[]=date('Y').'-'.$format;
+                }
+
+                $pembelian = procurment::leftJoin('detailprocurment','detailprocurment.no_po','=','procurment.nopo')->where('status_pengajuan','=','Approved')->get();
+                $penjualan= db::table('sell')->leftJoin('selldetail','selldetail.invoice','=','sell.invoice')->where('stat_keluar','=','Approved')->get();
+                foreach ($bulan as $bln) {
+                    $total_qty = 0;
+                    $total_qty2 = 0;
+                    foreach ($pembelian as $beli) {
+                        if ($beli->created_at->format('Y-m') == $bln) {
+                            $total_qty += (int) $beli->qty;
+                        }
+                    }
+                    $data_pembelian_barang[$bln] = $total_qty;
+                    $data_beli[] = $total_qty;
+
+                    foreach ($penjualan as $jual) {
+                        if (substr($jual->tgl_jual,0,7) == $bln) {
+                            $total_qty2 += (int) $jual->qty;
+                        }
+                    }
+                    $data_penjualan_barang[$bln] = $total_qty2;
+                    $data_jual[] = $total_qty2;
+                }
+                return response()->json(['pembelian'=>$pembelian,'penjualan'=>$penjualan,'data_beli'=>$data_beli,'data_jual'=>$data_jual,'bulan'=>$bulan]);
             }
         }
     }
