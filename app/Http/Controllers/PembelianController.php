@@ -29,15 +29,13 @@ class PembelianController extends Controller
      */
     public function index()
     {
-        // $procurment = procurment::get();
         $vendor = vendor::get();
         $data = detailprocurment::leftJoin('barang','barang.kode_barang','=','detailprocurment.kode_barang')->get();
         $procurment=DB::table('procurment')->orderByDesc('nopo')->leftJoin('vendor','procurment.Kode_vendor','=','vendor.kode_vendor')->get();
-        // dd($procurment);
         return view('2pembelian.table',compact('data','procurment','vendor'));
     }
     public function Formbuat(){
-        $barang = DB::table('barang')->get();
+        $barang = DB::table('barang')->where('aktivasi_pembelian','enable')->get();
         $vendor = vendor::all();
         $stok = stock::all();
         $tls="PO.";
@@ -188,9 +186,7 @@ class PembelianController extends Controller
     public function terima_table()
     {
         $hasil=db::table('pr')->rightJoin('vendor','pr.Kode_vendor','=','vendor.kode_vendor')->rightJoin('procurment','pr.nopo','=','procurment.nopo')->rightJoin('detailprocurment','pr.nopo','=','detailprocurment.no_po')->get();
-            $group = db::table('pr')->rightJoin('vendor','pr.Kode_vendor','=','vendor.kode_vendor')->rightJoin('procurment','pr.nopo','=','procurment.nopo')->get();
-        
-        
+        $group = db::table('pr')->rightJoin('vendor','pr.Kode_vendor','=','vendor.kode_vendor')->rightJoin('procurment','pr.nopo','=','procurment.nopo')->get();
         return view('2pembelian.terima.table_pr',compact('hasil','group'));
     }
 

@@ -286,8 +286,11 @@ function detail(nopo,kode_vendor, nama_vendor,bank, norek,grandtotal,bukti_bayar
         document.getElementById("nopoj").innerHTML = "Purchase Order Number : "+nopo;
     document.getElementById("bagkiri").innerHTML = " : " + kode_vendor + "<br> : " + nama_vendor + "<br> : " + telp;
     document.getElementById("bagkanan").innerHTML =" : " + dibuat + "<br> : " + bank + "<br> : " + norek;
-    console.log(bukti_bayar);
-    document.getElementById("bukti").src ="{{ asset('images/') }}/" + bukti_bayar;
+    if(bukti_bayar == 'Pending')
+    {
+        document.getElementById("bukti").src ="{{ asset('images/notpay/not.jpg') }}";
+    }
+    else{document.getElementById("bukti").src ="{{ asset('images/') }}/" + bukti_bayar;}
 }
 
 

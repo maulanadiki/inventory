@@ -27,6 +27,7 @@ Route::post('/authenticate', [Defashoes::class, 'authenticate'])->name('authenti
 Route::get('/home', [Defashoes::class, 'index'])->name('home');
 Route::get('/logout', [Defashoes::class, 'logout'])->name('logout');
 Route::post('/changepw', [Defashoes::class, 'changepw'])->name('changepw');
+Route::get('/grafik/cari', [Defashoes::class, 'cari'])->name('grafik.cari');
 
 Route::get('/task_todo', [taskController::class, 'index'])->name('task_todo');
 Route::post('/task/pembelian/bayar',[taskController::class,'update_status_pembayaran'])->name('task.barang');
@@ -66,6 +67,8 @@ route::get('/barang',[BarangController::class,'index'])->name('barang.tabel');
 route::get('/barang/buat',[BarangController::class,'buat'])->name('barang.buat');
 route::post('/barang/simpan',[BarangController::class,'simpan'])->name('barang.simpan');
 route::get('/barang/stok',[BarangController::class,'stok'])->name('barang.stok');
+route::get('/barang/ubah',[BarangController::class,'ubah'])->name('barang.ubah');
+route::post('/barang/ubahsimpan',[BarangController::class,'ubahsimpan'])->name('barang.ubahsimpan');
 
 // vendor
 route::get('/vendors',[VendorController::class,'index'])->name('vendor.table');
@@ -83,6 +86,7 @@ route::get('/karyawan/hapus/{id}',[KaryawanControlle::class,'hapus'])->name('kar
 
 // report
 route::get('/report',[ReportController::class,'index'])->name('report');
+route::get('/report/cari',[ReportController::class,'cari'])->name('report.cari');
 
 //report
 

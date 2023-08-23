@@ -45,7 +45,7 @@ class PenjualanController extends Controller
         $hari = $tls.date('dmy');
         $po = selling::where('invoice','LIKE','%'.$hari.'%')->get();
         $po2 = $po->max();
-        $lengkap= str::substr($po2,28,4);
+        $lengkap= str::substr($po2,29,4);
 
         // dd($lengkap);
         if(empty($lengkap) )
@@ -57,24 +57,7 @@ class PenjualanController extends Controller
             $idd = str_replace($hari, "", $lengkap);
             $id = str_pad($idd + 1, 4, 0, STR_PAD_LEFT);
             $notrans = $hari.$id;
-            // $no = str::substr($po);
         }
-    //    dd($notrans);
-        
-        // if($lengkap===$hari || $lengkap === 0 || $lengkap===false)
-        // {
-        //     $notrans = $hari."1";
-        // }
-        // else
-        // {
-        //     $carino = selling::where('invoice','like','%'.$lengkap.'%')->get();
-            // dd($carino);
-        //     $last =str::substr($po2,28,1);
-        //     $next = $last+1;
-        //     $notrans =$hari.$next;
-            
-        // }
-        // dd($notrans);
         
         $pembelian = procurment::count();
         
@@ -93,7 +76,38 @@ class PenjualanController extends Controller
     }
     public function simpan_penjualan(request $request)
     {
-        // dd($request->all());
+        $kode = $request->kode;
+        $qty= $request->qty;
+        $valueArray =[];
+        foreach($kode as $index => $kd){
+            $valueArray[] = $kd.','.$qty[$index];
+        }
+
+        $barangStok = DB::table('barang')
+        ->whereIn('barang.kode_barang', $kode)
+        ->leftJoin('stockgood','stockgood.kode_barang','=','barang.kode_barang')->get();
+        $stok =[];
+        $allStockAvailable = true;
+        foreach($barangStok as $brg){
+            $stok[]= $brg->kuantitas;
+        }
+        foreach ($stok as $index => $stokValue) {
+            if ($stokValue < $qty[$index]) {
+                $allStockAvailable = false;
+                break;
+            }
+        }
+        
+        if (!$allStockAvailable) {
+            session()->flash('error', 'Jumlah yang diminta melebihi stok barang yang tersedia.');
+            session()->forget('season');
+            alert()->warning('Danger','permintaan melebihi jumlah stok barang yang ada');
+
+            return redirect()->back();
+        }
+
+        else {            # code...
+
         $validated = $request->validate([
             'kode'=>'required',
             'beli'=>'required',
@@ -141,20 +155,46 @@ class PenjualanController extends Controller
         alert()->success('Success','Data Penjualan berhasil di input');
         return redirect('/penjualan');
     }
-
+    }
     public function barang_keluar(request $request, $status,$invoice)
     {
-        // dd("Data Barang Keluar Di - ".$status);
+        // dd($invoice);
+        
         $data=$request->kobar;
         $isi = $request->qty;
         if($status === "Approved")
         {
-        for ($i=0; $i < count($data) ; $i++) { 
+        for ($i=0; $i < count($data) ; $i++) {
+            $kode = selling::where('sell.invoice',$invoice)
+        ->leftJoin('selldetail','sell.invoice','=','selldetail.invoice')
+        ->leftJoin('stockgood','selldetail.kode_barang','=','stockgood.kode_barang')
+        ->get();
+        $kobar =[];
+        $qty = [];
+        $stok = [];
+        $allStockAvailable = true;
+        foreach($kode as $kd){
+            $kobar[] = $kd->kode_barang;
+            $qty[] = $kd->qty;
+            $stok[]=$kd->kuantitas;
+        }
+        // dd($kobar, $qty, $stok);
+        foreach ($stok as $index => $stokValue){
+            if ($stokValue < $qty[$index]) {
+                $allStockAvailable = false;
+                break;
+            }
+        }
+        if (!$allStockAvailable) {
+            alert()->warning('Peringatan !','permintaan melebihi jumlah stok barang yang ada, Cek Stok Barang Kembali');
+            return redirect()->back();
+        }
+        else{
             stock::where(['kode_barang'=>$data[$i] ]) ->update(['kuantitas' => $isi[$i]]);
             $update = selling::where('invoice',$invoice)->update(['stat_keluar'=>$status,'updated_at'=>date("Y-m-d")]);
             // dd($isi, $data);
             }
-            alert()->success("Data Barang Keluar Di - ".$status );
+            alert()->success("Data Barang Keluar Di - ".$status );}
         }
         else {
             $update = selling::where('invoice',$invoice)->update(['stat_keluar'=>$status,'updated_at'=>date("Y-m-d")]);
@@ -162,7 +202,6 @@ class PenjualanController extends Controller
         }
        
         return redirect('/penjualan');
-
     }
 
     public function simpan_resi(request $request)

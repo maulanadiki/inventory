@@ -86,7 +86,7 @@
 
 function gmb(id)
 {
-    console.log(id);
+    // console.log(id);
     document.getElementById("gambar").src = "{{ asset('images/') }}/" + id;
 }
 </script>

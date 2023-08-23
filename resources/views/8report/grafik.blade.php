@@ -4,21 +4,33 @@
   <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
 
-<div class="container-fluid p-3">
-    <div class="col-md-12">
-            <div id="masuk" class="shadow border border-3 rounded-3"></div>
+<div class="container-fluid">
+    
+    <div class="col-md-12 pb-3">
+            <div id="grafik" class="shadow border border-3 rounded-3"></div>
     </div>
 </div>
 
 <script>
+$(document).ready(function() {
+    $("#cari").on("click", function() {
+        var start = $('#start').val();
+        var end = $('#end').val();
+        // window.location.href = "{{url('report/barang')}}?start=" + start + "&end=" + end;
+        console.log(start, end);
+    });
+});
+
+
+
   var label = {!!json_encode($data_label)!!};
   var masuk = {!!json_encode($data_masuk)!!};
   const keluar = {!!json_encode($data_keluar)!!};
 
-  console.log(keluar);
+//   console.log(keluar);
   var stok = {!!json_encode($data_stk)!!};
-  console.log(stok);
-  Highcharts.chart('masuk', {
+//   console.log(stok);
+  Highcharts.chart('grafik', {
     chart: {
         type: 'column'
     },

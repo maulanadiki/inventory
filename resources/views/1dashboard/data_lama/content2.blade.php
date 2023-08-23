@@ -249,7 +249,7 @@
 <script>
     var barang_keluar = {!!json_encode($brg_kel)!!};
     var eeoq = {!!json_encode($EOQ)!!}
-    console.log(barang_keluar, eeoq);
+    // console.log(barang_keluar, eeoq);
 
     $(document).ready(function(){
 

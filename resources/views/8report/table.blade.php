@@ -3,9 +3,9 @@
 @extends('layout.layout')
 @section('konten')
 <style>
-    .nav-link:not(.active){
-        color: #f2f2f2 !important;
-    }
+.nav-link:not(.active) {
+    color: #f2f2f2 !important;
+}
 </style>
 
 <div class="container-fluid">
@@ -14,7 +14,8 @@
             <nav aria-label="breadcrumb">
                 <ul class="breadcrumb ms-3">
                     <li class="breadcrumb-item"><a class="jdl fs-5" href="{{url('home') }}">Dashboard</a></li>
-                    <li class="breadcrumb-item fs-5 text-light">Report</></li>
+                    <li class="breadcrumb-item fs-5 text-light">Report</>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -38,6 +39,7 @@
                 style="background-color:white; border:1px solid #dee2e6; border-bottom-right-radius:20px; border-bottom-left-radius:20px;">
                 <div id="masuk" class="container tab-pane active"><br>
                     <h3>Grafik Barang</h3>
+                    
                     @include('8report.grafik')
                 </div>
                 <div id="bmasuk" class="container tab-pane fade overflow-auto p-3 m-0"><br>
@@ -56,10 +58,10 @@
 
 
 <script>
-$(document).ready(function(){
-  $(".nav-tabs a").click(function(){
-    $(this).tab('show');
-  });
+$(document).ready(function() {
+    $(".nav-tabs a").click(function() {
+        $(this).tab('show');
+    });
 });
 </script>
 @endsection
