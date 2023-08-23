@@ -29,11 +29,8 @@ class ReportController extends Controller
         $nilai = array( );
         $nilai2 = array( );
         $nilai3 = array( );
-
-
         $data_kel = array();
         $data_keluar = array();
-
         $data_stkgd =array();
         $data_stk = array();
         $employe = employe::get();
@@ -45,14 +42,11 @@ class ReportController extends Controller
         ->where('statpr','=','Recieved')->get();
         $data_barangkeluar = DB::table('selldetail')->leftJoin('sell','sell.invoice','=','selldetail.invoice')
         ->where('stat_keluar','=','Approved')->get();
-
         $data_stokbrg = DB::table('stockgood')->get();
-        
-        $data_beli = procurment::leftJoin('vendor','vendor.kode_vendor','=','procurment.Kode_vendor')->get();
-        $data_jual = selling::get();
-        // dd($data_beli, $data_jual);
-
-
+        $data_beli = procurment::leftJoin('vendor','vendor.kode_vendor','=','procurment.Kode_vendor')->where('status_pengajuan','!=','Rejected')->get();
+        // dd($data_beli);
+        $data_jual = selling::where('stat_keluar','=','Approved')->where('bukti_resi','!=','Pending')->get();
+        // dd($data_jual);
         foreach($barang as $brg)
         {
             
@@ -70,7 +64,6 @@ class ReportController extends Controller
                     $data_msk[$brg->kode_barang][] = 0;
                 }
             }
-            // dd($data_msk);
             if($data_msk != null )
             {
                 $data_masuk[] = array_sum($data_msk[$brg->kode_barang]); 
@@ -78,9 +71,6 @@ class ReportController extends Controller
             else {
                 $data_masuk[] = 0; 
             } 
-
-
-
             foreach($data_barangkeluar as $data_klr)
             {
                 $nilai2 = array($data_klr->qty);
@@ -100,21 +90,6 @@ class ReportController extends Controller
             else {
                 $data_keluar[] = 0; 
             } 
-
-
-
-              
-           
-
-            
-
-           
-
-                
-            
-            
-
-
             foreach($data_stokbrg as $dt_stk)
             {
                 if($dt_stk->kode_barang == $brg->kode_barang)
@@ -127,10 +102,11 @@ class ReportController extends Controller
             }
             $data_stk[] = array_sum($data_stkgd[$brg->kode_barang]);
         }
-
-        // dd($data_stk, $data_keluar, $data_masuk);
+        // dd($data_masuk,$data_keluar,$data_stk);
         return view('8report.table', compact('data_label','employe','data_masuk','data_keluar','data_stk','data_beli','data_jual') );
     }
+
+    
 
     /**
      * Show the form for creating a new resource.

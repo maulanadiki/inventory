@@ -44,6 +44,15 @@
     background-color: #219ebc !important;
 }
 </style>
+<script>
+        // Fungsi untuk membersihkan sessionStorage
+        function clearSessionStorage() {
+            sessionStorage.clear();
+        }
+
+        // Menambahkan event listener untuk event beforeunload
+        window.addEventListener('beforeunload', clearSessionStorage);
+    </script>
 
 <div class="container-fluid">
     <div class="frame base-system">

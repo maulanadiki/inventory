@@ -427,7 +427,7 @@
                 var name = $(this).data("name");
                 var kode = $(this).data("kode");
                 // keranjang.TambahItemToCart(kode,name);
-                console.log(kode);
+                // console.log(kode);
                 keranjang.tambahKuantitas(kode);
                 tampilCart();
                 
@@ -459,7 +459,7 @@
                                     $("#vcode").val(vdr.kode_vendor);
                                     $("#nbank").val(vdr.bank);
                                     $("#nnorek").val(vdr.norek);
-                                    console.log(vdr);
+                                    // console.log(vdr);
                                     nvendor +=
                                         "<input type='text' class='form-control' name='vcode' value='" +
                                         vdr.kode_vendor + "' disabled>";

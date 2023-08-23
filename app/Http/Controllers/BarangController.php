@@ -22,7 +22,20 @@ class BarangController extends Controller
     {
         // $login = Auth::User()->first();
         $data = barang::get();
-        return view ('4barang.tablebarang',compact('data'));
+        $name = [];
+        $size = [];
+        $color=[];
+
+        foreach($data as $brg){
+            $name[] = $brg->nama_barang;
+            $color[]= $brg->warna;
+            $size[] = $brg->ukuran;
+        }
+        $nabar = array_unique($name);
+        $warna= array_unique($color); 
+        $ukuran = array_unique($size);
+        
+        return view ('4barang.tablebarang',compact('data'),['nabar'=>$nabar,'warna'=>$warna,'ukuran'=>$ukuran]);
     }
     public function buat()
     {$login = Auth::User()->first();
@@ -46,6 +59,8 @@ class BarangController extends Controller
         $request->fbarang->storeAs('thumbnail',$namafile1);
         $foto1->move('images/',$namafile1); 
         $barang->f_barang = $namafile1; 
+        $barang->aktivasi_pembelian = 'enable';
+        $barang->aktivasi_penjualan = 'enable';
         // dd($request->kbarang);
 
         $good = new stock;
@@ -65,6 +80,58 @@ class BarangController extends Controller
         $data = barang::leftJoin('stockgood','stockgood.kode_barang','=','barang.kode_barang')
         ->orderBy('kuantitas','Desc')->get();
         return view('4barang.stok',compact('data','login'));
+    }
+
+    public function ubah(request $request){
+       
+
+        if($request->ajax()){
+            if($request->warna == null){
+                $warna = Barang::where('nama_barang','LIKE','%'.$request->nabar.'%')->get();
+                return response()->json(['warna'=>$warna]);
+            
+            }
+            else{
+                $ukuran = Barang::where('nama_barang','LIKE','%'.$request->nabar.'%')->where('warna','LIKE','%'.$request->warna.'%')->get();
+                return response()->json(['ukuran'=>$ukuran]);
+            }
+
+        }
+    }
+
+    public function ubahsimpan(request $request){
+        $cari = barang::where('nama_barang','LIKE','%'.$request->nama_barang.'%')
+        ->where('warna','LIKE','%'.$request->warna_barang.'%')
+        ->where('ukuran','LIKE','%'.$request->ukuran_barang.'%')
+        ->first();
+        $harga = str_replace('.','', $request->harga);
+        $code = $cari->kode_barang;
+        $update_penjualan = barang::where('kode_barang',$code)->update(['aktivasi_pembelian' => 'disable']);
+
+        $kobar = barang::max('kode_barang');
+        $kode = str_replace('BRG-','',$kobar);
+        $kode_barang = "BRG-".str_pad((int)$kode + 1, 5, 0, STR_PAD_LEFT);
+        $barang = new barang;
+        $barang->kode_barang = $kode_barang;
+        $barang->nama_barang = $request->nama_barang;
+        $barang->warna = $request->warna_barang;
+        $barang->ukuran = $request->ukuran_barang;
+        $barang->beli = $harga;
+        $barang->deskripsi = $request->desk;
+        $barang->f_barang = $cari->f_barang;
+        $barang->aktivasi_pembelian = 'enable';
+        $barang->aktivasi_penjualan = 'enable';
+
+
+        $good = new stock;
+        $good->kode_barang= $kode_barang;
+        $good->kuantitas = 0;
+        $good->created_at= date("Y/m/d");
+        $good->save();
+        $barang->save();
+        alert()->success('Success','Barang Berhasil di tambahkan');
+        return redirect('/barang')->with('terima','Data Sucessfully added ');
+
     }
 
     /**
